@@ -1,11 +1,8 @@
 import 'package:equatable/equatable.dart';
-import 'package:music_sliding_puzzle/position.dart';
+import 'package:music_sliding_puzzle/data/model/position.dart';
 
-/// {@template tile}
 /// Model for a puzzle tile.
-/// {@endtemplate}
 class Tile extends Equatable {
-  /// {@macro tile}
   const Tile({
     required this.value,
     required this.correctPosition,
