@@ -1,100 +1,125 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:music_sliding_puzzle/data/model/position.dart';
+import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:music_sliding_puzzle/data/model/puzzle.dart';
 import 'package:music_sliding_puzzle/data/model/tile.dart';
-import 'package:music_sliding_puzzle/view/puzzle_board.dart';
+import 'package:music_sliding_puzzle/presentation/puzzle_board_controller.dart';
 
 class PuzzleView extends StatelessWidget {
-  const PuzzleView(this._size, {Key? key, this.random}) : super(key: key);
-
-  final int _size;
-  final Random? random;
-
-  // final List<Tile> tiles;
+  const PuzzleView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(24),
-      child: PuzzleBoard(
-        puzzle: _generatePuzzle(_size),
+      child: GetBuilder(
+        init: PuzzleBoardController(),
+        builder: (PuzzleBoardController controller) {
+          return PuzzleBoard(puzzle: controller.puzzle);
+        },
       ),
     );
   }
+}
 
-  /// Build a list of tiles - giving each tile their correct position and current position.
-  Puzzle _generatePuzzle(int size, {bool shuffle = true}) {
-    final correctPositions = <Position>[];
-    final currentPositions = <Position>[];
-    final whitespacePosition = Position(x: size, y: size);
+/// Displays the board of the puzzle.
+class PuzzleBoard extends StatelessWidget {
+  const PuzzleBoard({Key? key, required this.puzzle}) : super(key: key);
 
-    // Create all possible board positions.
-    for (var y = 1; y <= size; y++) {
-      for (var x = 1; x <= size; x++) {
-        if (x == size && y == size) {
-          correctPositions.add(whitespacePosition);
-          currentPositions.add(whitespacePosition);
-        } else {
-          final position = Position(x: x, y: y);
-          correctPositions.add(position);
-          currentPositions.add(position);
-        }
-      }
-    }
+  final Puzzle puzzle;
 
-    if (shuffle) {
-      // Randomize only the current tile positions.
-      currentPositions.shuffle(random);
-    }
-
-    var tiles = _getTileListFromPositions(
-      size,
-      correctPositions,
-      currentPositions,
+  @override
+  Widget build(BuildContext context) {
+    final size = puzzle.getDimension();
+    if (size == 0) return const CircularProgressIndicator();
+    return SimplePuzzleBoard(
+      key: const Key('simple_puzzle_board_small'),
+      size: size,
+      tiles: puzzle.tiles
+          .map(
+            (tile) => _PuzzleTile(
+              key: Key('puzzle_tile_${tile.value.toString()}'),
+              tile: tile,
+            ),
+          )
+          .toList(),
     );
-
-    var puzzle = Puzzle(tiles: tiles);
-
-    if (shuffle) {
-      // Assign the tiles new current positions until the puzzle is solvable and
-      // zero tiles are in their correct position.
-      while (!puzzle.isSolvable() || puzzle.getNumberOfCorrectTiles() != 0) {
-        currentPositions.shuffle(random);
-        tiles = _getTileListFromPositions(
-          size,
-          correctPositions,
-          currentPositions,
-        );
-        puzzle = Puzzle(tiles: tiles);
-      }
-    }
-
-    return puzzle;
   }
+}
 
-  List<Tile> _getTileListFromPositions(
-    int size,
-    List<Position> correctPositions,
-    List<Position> currentPositions,
-  ) {
-    final whitespacePosition = Position(x: size, y: size);
-    return [
-      for (int i = 1; i <= size * size; i++)
-        if (i == size * size)
-          Tile(
-            value: i,
-            correctPosition: whitespacePosition,
-            currentPosition: currentPositions[i - 1],
-            isWhitespace: true,
-          )
-        else
-          Tile(
-            value: i,
-            correctPosition: correctPositions[i - 1],
-            currentPosition: currentPositions[i - 1],
-          )
-    ];
+class SimplePuzzleBoard extends StatelessWidget {
+  const SimplePuzzleBoard({
+    Key? key,
+    required this.size,
+    required this.tiles,
+    this.spacing = 8,
+  }) : super(key: key);
+
+  final int size;
+  final List<Widget> tiles;
+  final double spacing;
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.count(
+      padding: EdgeInsets.zero,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      crossAxisCount: size,
+      mainAxisSpacing: spacing,
+      crossAxisSpacing: spacing,
+      children: tiles,
+    );
+  }
+}
+
+class _PuzzleTile extends StatelessWidget {
+  const _PuzzleTile({
+    Key? key,
+    required this.tile,
+  }) : super(key: key);
+
+  final Tile tile;
+
+  @override
+  Widget build(BuildContext context) {
+    // final theme = context.select((ThemeBloc bloc) => bloc.state.theme);
+    // final state = context.select((PuzzleBloc bloc) => bloc.state);
+
+    return tile.isWhitespace
+        ? const SizedBox()
+        : _SimplePuzzleTile(
+            key: Key('simple_puzzle_tile_${tile.value}_small'),
+            tile: tile,
+          );
+  }
+}
+
+class _SimplePuzzleTile extends StatelessWidget {
+  const _SimplePuzzleTile({
+    Key? key,
+    required this.tile,
+  }) : super(key: key);
+
+  final Tile tile;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      style: TextButton.styleFrom(
+        // primary: PuzzleColors.white,
+        // textStyle: PuzzleTextStyle.headline2.copyWith(
+        //   fontSize: tileFontSize,
+        // ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(12),
+          ),
+        ),
+      ).copyWith(),
+      onPressed: () => {},
+      child: Text(
+        tile.value.toString(),
+      ),
+    );
   }
 }

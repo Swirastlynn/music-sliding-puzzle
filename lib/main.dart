@@ -33,7 +33,7 @@ class MyHomePage extends StatelessWidget {
         title: Text(title),
       ),
       body: const Center(
-        child: PuzzleView(4),
+        child: PuzzleView(),
       ),
     );
   }
