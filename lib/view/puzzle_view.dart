@@ -14,7 +14,8 @@ class PuzzleView extends StatelessWidget {
       child: GetBuilder(
         init: PuzzleBoardController(),
         builder: (PuzzleBoardController controller) {
-          return PuzzleBoard(puzzle: controller.puzzle);
+          debugPrint("TEST create puzzle board");
+          return _PuzzleBoard(puzzle: controller.puzzleState);
         },
       ),
     );
@@ -22,8 +23,8 @@ class PuzzleView extends StatelessWidget {
 }
 
 /// Displays the board of the puzzle.
-class PuzzleBoard extends StatelessWidget {
-  const PuzzleBoard({Key? key, required this.puzzle}) : super(key: key);
+class _PuzzleBoard extends StatelessWidget {
+  const _PuzzleBoard({Key? key, required this.puzzle}) : super(key: key);
 
   final Puzzle puzzle;
 
@@ -31,7 +32,7 @@ class PuzzleBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = puzzle.getDimension();
     if (size == 0) return const CircularProgressIndicator();
-    return SimplePuzzleBoard(
+    return _SimplePuzzleBoard(
       key: const Key('simple_puzzle_board_small'),
       size: size,
       tiles: puzzle.tiles
@@ -46,8 +47,8 @@ class PuzzleBoard extends StatelessWidget {
   }
 }
 
-class SimplePuzzleBoard extends StatelessWidget {
-  const SimplePuzzleBoard({
+class _SimplePuzzleBoard extends StatelessWidget {
+  const _SimplePuzzleBoard({
     Key? key,
     required this.size,
     required this.tiles,
@@ -104,22 +105,29 @@ class _SimplePuzzleTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      style: TextButton.styleFrom(
-        // primary: PuzzleColors.white,
-        // textStyle: PuzzleTextStyle.headline2.copyWith(
-        //   fontSize: tileFontSize,
-        // ),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(12),
+    return GetBuilder(
+      init: PuzzleBoardController(),
+      builder: (PuzzleBoardController controller) {
+        return TextButton(
+          style: TextButton.styleFrom(
+            // primary: PuzzleColors.white,
+            // textStyle: PuzzleTextStyle.headline2.copyWith(
+            //   fontSize: tileFontSize,
+            // ),
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(12),
+              ),
+            ),
+          ).copyWith(),
+          onPressed: () => {
+            controller.move(tile) // todo is move appropriate naming at this scope?
+          },
+          child: Text(
+            tile.value.toString(),
           ),
-        ),
-      ).copyWith(),
-      onPressed: () => {},
-      child: Text(
-        tile.value.toString(),
-      ),
+        );
+      },
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:music_sliding_puzzle/data/model/position.dart';
 import 'package:music_sliding_puzzle/data/model/puzzle.dart';
@@ -10,11 +11,14 @@ class PuzzleBoardController extends GetxController {
 
   static const _PUZZLE_SIZE = 4;
   final Random? random;
-  late Puzzle puzzle;
+  late Puzzle puzzleState; // todo move to state object which should be observed
+
+  // final PuzzleStatus puzzleStatus; todo add puzzleStatus
 
   @override
   void onInit() {
-    puzzle = _generatePuzzle(_PUZZLE_SIZE);
+    puzzleState = _generatePuzzle(_PUZZLE_SIZE).sort();
+    debugPrint("TEST PuzzleBoardController onInit puzzle generated");
     super.onInit();
   }
 
@@ -90,5 +94,23 @@ class PuzzleBoardController extends GetxController {
             currentPosition: currentPositions[i - 1],
           )
     ];
+  }
+
+  // todo there are different possible results: complete/incomplete=>isMovable=>move=>complete/incomplete, also isNotMovable
+  void move(Tile tappedTile) {
+    if (puzzleState.isTileMovable(tappedTile)) {
+      final mutablePuzzle = Puzzle(tiles: [...puzzleState.tiles]);
+      final movedPuzzle = mutablePuzzle.moveTiles(tappedTile, []);
+      if (movedPuzzle.isComplete()) {
+        // todo
+      } else {
+        // puzzleState = movedPuzzle;
+        puzzleState = movedPuzzle.sort();
+        update();
+      }
+    } else {
+      debugPrint("TEST Tile is not movable");
+      // todo
+    }
   }
 }
