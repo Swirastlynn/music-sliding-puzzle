@@ -5,20 +5,21 @@ import 'package:get/get.dart';
 import 'package:music_sliding_puzzle/data/model/position.dart';
 import 'package:music_sliding_puzzle/data/model/puzzle.dart';
 import 'package:music_sliding_puzzle/data/model/tile.dart';
+import 'package:music_sliding_puzzle/presentation/puzzle_state.dart';
 
-class PuzzleBoardController extends GetxController {
-  PuzzleBoardController({this.random});
+class PuzzleController extends GetxController {
+  PuzzleController({this.random});
 
-  static const _PUZZLE_SIZE = 4;
+  static const _puzzleSize = 4;
   final Random? random;
-  late Puzzle puzzleState; // todo move to state object which should be observed
 
-  // final PuzzleStatus puzzleStatus; todo add puzzleStatus
+  late Rx<PuzzleState> puzzleState;
+  get puzzle => puzzleState.value.puzzle;
 
   @override
   void onInit() {
-    puzzleState = _generatePuzzle(_PUZZLE_SIZE).sort();
-    debugPrint("TEST PuzzleBoardController onInit puzzle generated");
+    puzzleState = PuzzleState(puzzle: _generatePuzzle(_puzzleSize).sort()).obs;
+    debugPrint("TEST PuzzleController onInit puzzle generated");
     super.onInit();
   }
 
@@ -28,7 +29,7 @@ class PuzzleBoardController extends GetxController {
     final currentPositions = <Position>[];
     final whitespacePosition = Position(x: size, y: size);
 
-    // Create all possible board positions.
+    // Create all possible positions.
     for (var y = 1; y <= size; y++) {
       for (var x = 1; x <= size; x++) {
         if (x == size && y == size) {
@@ -97,16 +98,16 @@ class PuzzleBoardController extends GetxController {
   }
 
   // todo there are different possible results: complete/incomplete=>isMovable=>move=>complete/incomplete, also isNotMovable
-  void move(Tile tappedTile) {
-    if (puzzleState.isTileMovable(tappedTile)) {
-      final mutablePuzzle = Puzzle(tiles: [...puzzleState.tiles]);
+  void moveTile(Tile tappedTile) {
+    if (puzzleState.value.puzzle.isTileMovable(tappedTile)) {
+      final mutablePuzzle = Puzzle(tiles: [...puzzleState.value.puzzle.tiles]);
       final movedPuzzle = mutablePuzzle.moveTiles(tappedTile, []);
       if (movedPuzzle.isComplete()) {
         // todo
       } else {
-        // puzzleState = movedPuzzle;
-        puzzleState = movedPuzzle.sort();
-        update();
+        puzzleState.update((state) {
+          state?.puzzle = movedPuzzle.sort();
+        });
       }
     } else {
       debugPrint("TEST Tile is not movable");

@@ -32,7 +32,7 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text(title),
       ),
-      body: const Center(
+      body: Center(
         child: PuzzleView(),
       ),
     );

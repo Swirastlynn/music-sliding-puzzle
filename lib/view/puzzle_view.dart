@@ -1,30 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:get/get.dart';
 import 'package:music_sliding_puzzle/data/model/puzzle.dart';
 import 'package:music_sliding_puzzle/data/model/tile.dart';
-import 'package:music_sliding_puzzle/presentation/puzzle_board_controller.dart';
+import 'package:music_sliding_puzzle/presentation/puzzle_controller.dart';
 
 class PuzzleView extends StatelessWidget {
-  const PuzzleView({Key? key}) : super(key: key);
+  PuzzleView({Key? key}) : super(key: key); // todo DI
+
+  final PuzzleController controller = Get.put(PuzzleController());
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(24),
-      child: GetBuilder(
-        init: PuzzleBoardController(),
-        builder: (PuzzleBoardController controller) {
-          debugPrint("TEST create puzzle board");
-          return _PuzzleBoard(puzzle: controller.puzzleState);
-        },
-      ),
+      child: Obx(() => _Board(puzzle: controller.puzzle)),
     );
   }
 }
 
-/// Displays the board of the puzzle.
-class _PuzzleBoard extends StatelessWidget {
-  const _PuzzleBoard({Key? key, required this.puzzle}) : super(key: key);
+class _Board extends StatelessWidget {
+  const _Board({Key? key, required this.puzzle}) : super(key: key);
 
   final Puzzle puzzle;
 
@@ -32,13 +27,17 @@ class _PuzzleBoard extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = puzzle.getDimension();
     if (size == 0) return const CircularProgressIndicator();
-    return _SimplePuzzleBoard(
-      key: const Key('simple_puzzle_board_small'),
-      size: size,
-      tiles: puzzle.tiles
+    return GridView.count(
+      padding: EdgeInsets.zero,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      crossAxisCount: size,
+      mainAxisSpacing: 8,
+      crossAxisSpacing: 8,
+      children: puzzle.tiles
           .map(
-            (tile) => _PuzzleTile(
-              key: Key('puzzle_tile_${tile.value.toString()}'),
+            (tile) => _Tile(
+              key: Key('tile_${tile.value.toString()}'),
               tile: tile,
             ),
           )
@@ -47,34 +46,8 @@ class _PuzzleBoard extends StatelessWidget {
   }
 }
 
-class _SimplePuzzleBoard extends StatelessWidget {
-  const _SimplePuzzleBoard({
-    Key? key,
-    required this.size,
-    required this.tiles,
-    this.spacing = 8,
-  }) : super(key: key);
-
-  final int size;
-  final List<Widget> tiles;
-  final double spacing;
-
-  @override
-  Widget build(BuildContext context) {
-    return GridView.count(
-      padding: EdgeInsets.zero,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      crossAxisCount: size,
-      mainAxisSpacing: spacing,
-      crossAxisSpacing: spacing,
-      children: tiles,
-    );
-  }
-}
-
-class _PuzzleTile extends StatelessWidget {
-  const _PuzzleTile({
+class _Tile extends StatelessWidget {
+  const _Tile({
     Key? key,
     required this.tile,
   }) : super(key: key);
@@ -83,20 +56,28 @@ class _PuzzleTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final theme = context.select((ThemeBloc bloc) => bloc.state.theme);
-    // final state = context.select((PuzzleBloc bloc) => bloc.state);
-
     return tile.isWhitespace
-        ? const SizedBox()
-        : _SimplePuzzleTile(
-            key: Key('simple_puzzle_tile_${tile.value}_small'),
+        ? const _WhitespaceTile()
+        : _MusicTile(
+            key: Key('simple_tile_${tile.value}'),
             tile: tile,
           );
   }
 }
 
-class _SimplePuzzleTile extends StatelessWidget {
-  const _SimplePuzzleTile({
+class _WhitespaceTile extends StatelessWidget {
+  const _WhitespaceTile({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox();
+  }
+}
+
+class _MusicTile extends GetView<PuzzleController> {
+  const _MusicTile({
     Key? key,
     required this.tile,
   }) : super(key: key);
@@ -105,29 +86,24 @@ class _SimplePuzzleTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder(
-      init: PuzzleBoardController(),
-      builder: (PuzzleBoardController controller) {
-        return TextButton(
-          style: TextButton.styleFrom(
-            // primary: PuzzleColors.white,
-            // textStyle: PuzzleTextStyle.headline2.copyWith(
-            //   fontSize: tileFontSize,
-            // ),
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(12),
-              ),
-            ),
-          ).copyWith(),
-          onPressed: () => {
-            controller.move(tile) // todo is move appropriate naming at this scope?
-          },
-          child: Text(
-            tile.value.toString(),
+    return TextButton(
+      style: TextButton.styleFrom(
+        // primary: PuzzleColors.white,
+        // textStyle: PuzzleTextStyle.headline2.copyWith(
+        //   fontSize: tileFontSize,
+        // ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(12),
           ),
-        );
+        ),
+      ).copyWith(),
+      onPressed: () => {
+        controller.moveTile(tile)
       },
+      child: Text(
+        tile.value.toString(),
+      ),
     );
   }
 }
