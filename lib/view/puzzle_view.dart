@@ -5,9 +5,9 @@ import 'package:music_sliding_puzzle/data/model/tile.dart';
 import 'package:music_sliding_puzzle/presentation/puzzle_controller.dart';
 
 class PuzzleView extends StatelessWidget {
-  PuzzleView({Key? key}) : super(key: key); // todo DI
+  PuzzleView({Key? key}) : super(key: key);
 
-  final PuzzleController controller = Get.put(PuzzleController());
+  final PuzzleController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
