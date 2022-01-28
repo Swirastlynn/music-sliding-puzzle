@@ -67,7 +67,7 @@ flutter:
   assets:
     - assets/images/
 #    A 2 Octave G Major Scale, https://freesound.org/people/Cunningar0807/sounds/369022/, Creative Commons licensed
-    - assets/audio/G_major_scale_1.mp3
+    - assets/audio/G_major_scale_1.mp3 # todo clip initial silence
     - assets/audio/G_major_scale_2.mp3
     - assets/audio/G_major_scale_3.mp3
     - assets/audio/G_major_scale_4.mp3

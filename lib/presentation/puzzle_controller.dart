@@ -22,16 +22,6 @@ class PuzzleController extends GetxController {
 
   @override
   void onInit() {
-    // localMusicPlayer.loadAll(
-    //     ['assets/audio/G_major_scale_1.mp3', 'assets/audio/G_major_scale_2.mp3',
-    //       'assets/audio/G_major_scale_3.mp3', 'assets/audio/G_major_scale_4.mp3',
-    //       'assets/audio/G_major_scale_5.mp3', 'assets/audio/G_major_scale_6.mp3',
-    //       'assets/audio/G_major_scale_7.mp3', 'assets/audio/G_major_scale_8.mp3',
-    //       'assets/audio/G_major_scale_9.mp3', 'assets/audio/G_major_scale_10.mp3',
-    //       'assets/audio/G_major_scale_11.mp3', 'assets/audio/G_major_scale_12.mp3',
-    //       'assets/audio/G_major_scale_13.mp3', 'assets/audio/G_major_scale_14.mp3',
-    //       'assets/audio/G_major_scale_15.mp3',
-    //     ]);
     puzzleState = PuzzleState(puzzle: _generatePuzzle(_puzzleSize).sort()).obs;
     debugPrint("TEST PuzzleController onInit puzzle generated");
     super.onInit();
