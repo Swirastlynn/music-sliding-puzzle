@@ -9,7 +9,7 @@ class SoundLibrary {
   final AudioCache audioCache;
   final int stage;
 
-  static const List<String> sounds = [
+  final List<String> soundsPaths = [
     'stage1/G_major_scale_1.mp3',
     'stage1/G_major_scale_2.mp3',
     'stage1/G_major_scale_3.mp3',
@@ -28,8 +28,31 @@ class SoundLibrary {
     'stage1/G_major_scale_full.wav',
   ];
 
+  final _mapOfStagesToSoundNames = {
+    1: [
+      "G3",
+      "A3",
+      "B3",
+      "C4",
+      "D4",
+      "E4",
+      "F#4",
+      "G4",
+      "A4",
+      "B4",
+      "C5",
+      "D5",
+      "E5",
+      "F5#",
+      "G5",
+      "WHITESPACE_PLACEHOLDER"
+    ],
+  };
+
+  String soundName(int index) => _mapOfStagesToSoundNames.entries.elementAt(stage - 1).value[index];
+
   void preload() {
-    audioCache.loadAll(sounds);
+    audioCache.loadAll(soundsPaths);
   }
 
   void playSound(Tile tappedTile) {

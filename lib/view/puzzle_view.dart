@@ -99,10 +99,10 @@ class _MusicTile extends GetView<PuzzleController> {
         ),
       ).copyWith(),
       onPressed: () => {
-        controller.tapTile(tile)
+        controller.tapTile(tile),
       },
       child: Text(
-        tile.value.toString(),
+        tile.name,
       ),
     );
   }

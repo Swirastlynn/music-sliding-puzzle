@@ -84,6 +84,7 @@ class PuzzleController extends GetxController {
         if (i == levelSize * levelSize)
           Tile(
             value: i,
+            name: soundLibrary.soundName(i - 1),
             correctPosition: whitespacePosition,
             currentPosition: currentPositions[i - 1],
             isWhitespace: true,
@@ -91,6 +92,7 @@ class PuzzleController extends GetxController {
         else
           Tile(
             value: i,
+            name: soundLibrary.soundName(i - 1),
             correctPosition: correctPositions[i - 1],
             currentPosition: currentPositions[i - 1],
           )

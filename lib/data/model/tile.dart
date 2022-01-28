@@ -5,6 +5,7 @@ import 'package:music_sliding_puzzle/data/model/position.dart';
 class Tile extends Equatable {
   const Tile({
     required this.value,
+    required this.name,
     required this.correctPosition,
     required this.currentPosition,
     this.isWhitespace = false,
@@ -12,6 +13,9 @@ class Tile extends Equatable {
 
   /// Value representing the correct position of [Tile] in a list.
   final int value;
+
+  /// String representing a name visible to a player.
+  final String name;
 
   /// The correct 2D [Position] of the [Tile]. All tiles must be in their
   /// correct position to complete the puzzle.
@@ -27,6 +31,7 @@ class Tile extends Equatable {
   Tile copyWith({required Position currentPosition}) {
     return Tile(
       value: value,
+      name: name,
       correctPosition: correctPosition,
       currentPosition: currentPosition,
       isWhitespace: isWhitespace,
@@ -36,6 +41,7 @@ class Tile extends Equatable {
   @override
   List<Object> get props => [
         value,
+        name,
         correctPosition,
         currentPosition,
         isWhitespace,
