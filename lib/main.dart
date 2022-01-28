@@ -4,6 +4,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/bindings_interface.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:music_sliding_puzzle/data/sounds_library.dart';
 import 'package:music_sliding_puzzle/presentation/puzzle_controller.dart';
 
 import 'level.dart';
@@ -32,33 +33,24 @@ class MyApp extends StatelessWidget {
 class AppBinding implements Bindings {
   @override
   void dependencies() {
+    Level level = Level(size: 4, stage: 1);
     AudioPlayer audioPlayer = AudioPlayer();
     AudioCache audioCache = AudioCache(
       prefix: 'assets/audio/',
       fixedPlayer: audioPlayer,
     );
-    audioCache.loadAll([
-      'G_major_scale_1.mp3',
-      'G_major_scale_2.mp3',
-      'G_major_scale_3.mp3',
-      'G_major_scale_4.mp3',
-      'G_major_scale_5.mp3',
-      'G_major_scale_6.mp3',
-      'G_major_scale_7.mp3',
-      'G_major_scale_8.mp3',
-      'G_major_scale_9.mp3',
-      'G_major_scale_10.mp3',
-      'G_major_scale_11.mp3',
-      'G_major_scale_12.mp3',
-      'G_major_scale_13.mp3',
-      'G_major_scale_14.mp3',
-      'G_major_scale_15.mp3',
-    ]);
+    var soundLibrary = SoundLibrary(
+      audioCache: audioCache,
+      stage: level.stage, // todo for more Levels, keep global GameState in this class
+    );
     Get.lazyPut<PuzzleController>(
-      () => PuzzleController(
-        audioCache: audioCache,
-        level: Level(size: 4, stage: 1), // todo for more Levels, keep global GameState in this class
-      ),
+      () {
+
+        return PuzzleController(
+        soundLibrary: soundLibrary,
+        levelSize: level.size,
+      );
+      },
     );
   }
 }

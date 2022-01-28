@@ -1,19 +1,18 @@
 import 'dart:math';
 
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:music_sliding_puzzle/data/model/position.dart';
 import 'package:music_sliding_puzzle/data/model/puzzle.dart';
 import 'package:music_sliding_puzzle/data/model/tile.dart';
-import 'package:music_sliding_puzzle/level.dart';
+import 'package:music_sliding_puzzle/data/sounds_library.dart';
 import 'package:music_sliding_puzzle/presentation/puzzle_state.dart';
 
 class PuzzleController extends GetxController {
-  PuzzleController({required this.audioCache, required this.level, this.random});
+  PuzzleController({required this.soundLibrary, required this.levelSize, this.random});
 
-  final AudioCache audioCache;
-  final Level level;
+  final SoundLibrary soundLibrary;
+  final int levelSize;
   final Random? random;
 
   late Rx<PuzzleState> puzzleState;
@@ -22,23 +21,21 @@ class PuzzleController extends GetxController {
 
   @override
   void onInit() {
-    puzzleState = PuzzleState(puzzle: _generatePuzzle(level).sort()).obs;
+    puzzleState = PuzzleState(puzzle: _generatePuzzle().sort()).obs;
     debugPrint("TEST PuzzleController onInit puzzle generated");
     super.onInit();
   }
 
   /// Build a list of tiles - giving each tile their correct position and current position.
-  Puzzle _generatePuzzle(Level level, {bool shuffle = true}) {
-    final size = level.size;
-    final stage = level.stage;
+  Puzzle _generatePuzzle({bool shuffle = true}) {
     final correctPositions = <Position>[];
     final currentPositions = <Position>[];
-    final whitespacePosition = Position(x: size, y: size);
+    final whitespacePosition = Position(x: levelSize, y: levelSize);
 
     // Create all possible positions.
-    for (var y = 1; y <= size; y++) {
-      for (var x = 1; x <= size; x++) {
-        if (x == size && y == size) {
+    for (var y = 1; y <= levelSize; y++) {
+      for (var x = 1; x <= levelSize; x++) {
+        if (x == levelSize && y == levelSize) {
           correctPositions.add(whitespacePosition);
           currentPositions.add(whitespacePosition);
         } else {
@@ -55,7 +52,6 @@ class PuzzleController extends GetxController {
     }
 
     var tiles = _getTileListFromPositions(
-      size,
       correctPositions,
       currentPositions,
     );
@@ -68,7 +64,6 @@ class PuzzleController extends GetxController {
       while (!puzzle.isSolvable() || puzzle.getNumberOfCorrectTiles() != 0) {
         currentPositions.shuffle(random);
         tiles = _getTileListFromPositions(
-          size,
           correctPositions,
           currentPositions,
         );
@@ -80,14 +75,13 @@ class PuzzleController extends GetxController {
   }
 
   List<Tile> _getTileListFromPositions(
-    int size,
     List<Position> correctPositions,
     List<Position> currentPositions,
   ) {
-    final whitespacePosition = Position(x: size, y: size);
+    final whitespacePosition = Position(x: levelSize, y: levelSize);
     return [
-      for (int i = 1; i <= size * size; i++)
-        if (i == size * size)
+      for (int i = 1; i <= levelSize * levelSize; i++)
+        if (i == levelSize * levelSize)
           Tile(
             value: i,
             correctPosition: whitespacePosition,
@@ -105,7 +99,7 @@ class PuzzleController extends GetxController {
 
   // todo there are different possible results: complete/incomplete=>isMovable=>move=>complete/incomplete, also isNotMovable
   void tapTile(Tile tappedTile) {
-    audioCache.play('G_major_scale_1.mp3');
+    soundLibrary.playSound(tappedTile);
 
     if (puzzleState.value.puzzle.isTileMovable(tappedTile)) {
       final mutablePuzzle = Puzzle(tiles: [...puzzleState.value.puzzle.tiles]);
