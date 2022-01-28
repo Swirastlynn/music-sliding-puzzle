@@ -32,6 +32,7 @@ dependencies:
   logger: ^1.1.0
   get: ^4.5.1
   equatable: ^2.0.3
+  audioplayers: ^0.20.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -65,6 +66,23 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/images/
+#    A 2 Octave G Major Scale, https://freesound.org/people/Cunningar0807/sounds/369022/, Creative Commons licensed
+    - assets/audio/G_major_scale_1.mp3
+    - assets/audio/G_major_scale_2.mp3
+    - assets/audio/G_major_scale_3.mp3
+    - assets/audio/G_major_scale_4.mp3
+    - assets/audio/G_major_scale_5.mp3
+    - assets/audio/G_major_scale_6.mp3
+    - assets/audio/G_major_scale_7.mp3
+    - assets/audio/G_major_scale_8.mp3
+    - assets/audio/G_major_scale_9.mp3
+    - assets/audio/G_major_scale_10.mp3
+    - assets/audio/G_major_scale_11.mp3
+    - assets/audio/G_major_scale_12.mp3
+    - assets/audio/G_major_scale_13.mp3
+    - assets/audio/G_major_scale_14.mp3
+    - assets/audio/G_major_scale_15.mp3
+    - assets/audio/G_major_scale_full.wav
   fonts:
     - family: GoogleSans
       fonts:

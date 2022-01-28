@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:music_sliding_puzzle/data/model/position.dart';
@@ -8,16 +9,29 @@ import 'package:music_sliding_puzzle/data/model/tile.dart';
 import 'package:music_sliding_puzzle/presentation/puzzle_state.dart';
 
 class PuzzleController extends GetxController {
-  PuzzleController({this.random});
+  PuzzleController(this.localMusicPlayer, {this.random});
 
   static const _puzzleSize = 4;
+
+  final AudioCache localMusicPlayer;
   final Random? random;
 
   late Rx<PuzzleState> puzzleState;
+
   get puzzle => puzzleState.value.puzzle;
 
   @override
   void onInit() {
+    // localMusicPlayer.loadAll(
+    //     ['assets/audio/G_major_scale_1.mp3', 'assets/audio/G_major_scale_2.mp3',
+    //       'assets/audio/G_major_scale_3.mp3', 'assets/audio/G_major_scale_4.mp3',
+    //       'assets/audio/G_major_scale_5.mp3', 'assets/audio/G_major_scale_6.mp3',
+    //       'assets/audio/G_major_scale_7.mp3', 'assets/audio/G_major_scale_8.mp3',
+    //       'assets/audio/G_major_scale_9.mp3', 'assets/audio/G_major_scale_10.mp3',
+    //       'assets/audio/G_major_scale_11.mp3', 'assets/audio/G_major_scale_12.mp3',
+    //       'assets/audio/G_major_scale_13.mp3', 'assets/audio/G_major_scale_14.mp3',
+    //       'assets/audio/G_major_scale_15.mp3',
+    //     ]);
     puzzleState = PuzzleState(puzzle: _generatePuzzle(_puzzleSize).sort()).obs;
     debugPrint("TEST PuzzleController onInit puzzle generated");
     super.onInit();
@@ -73,11 +87,9 @@ class PuzzleController extends GetxController {
     return puzzle;
   }
 
-  List<Tile> _getTileListFromPositions(
-    int size,
-    List<Position> correctPositions,
-    List<Position> currentPositions,
-  ) {
+  List<Tile> _getTileListFromPositions(int size,
+      List<Position> correctPositions,
+      List<Position> currentPositions,) {
     final whitespacePosition = Position(x: size, y: size);
     return [
       for (int i = 1; i <= size * size; i++)
@@ -105,6 +117,11 @@ class PuzzleController extends GetxController {
       if (movedPuzzle.isComplete()) {
         // todo
       } else {
+        // playLocal() async {
+        //   Uint8List byteData =
+        // int result = await audioPlayer.play();
+        // }
+        localMusicPlayer.play('G_major_scale_1.mp3');
         puzzleState.update((state) {
           state?.puzzle = movedPuzzle.sort();
         });

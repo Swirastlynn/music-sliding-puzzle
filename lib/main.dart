@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/bindings_interface.dart';
@@ -30,7 +31,12 @@ class MyApp extends StatelessWidget {
 class AppBinding implements Bindings  {
   @override
   void dependencies() {
-    Get.lazyPut<PuzzleController>(() => PuzzleController());
+    Get.lazyPut<PuzzleController>(() => PuzzleController(
+        AudioCache(
+          prefix: 'assets/audio/',
+          fixedPlayer: AudioPlayer(mode: PlayerMode.LOW_LATENCY),
+        )
+    ));
   }
 }
 
