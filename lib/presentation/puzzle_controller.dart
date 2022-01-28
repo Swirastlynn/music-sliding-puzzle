@@ -6,14 +6,14 @@ import 'package:get/get.dart';
 import 'package:music_sliding_puzzle/data/model/position.dart';
 import 'package:music_sliding_puzzle/data/model/puzzle.dart';
 import 'package:music_sliding_puzzle/data/model/tile.dart';
+import 'package:music_sliding_puzzle/level.dart';
 import 'package:music_sliding_puzzle/presentation/puzzle_state.dart';
 
 class PuzzleController extends GetxController {
-  PuzzleController(this.localMusicPlayer, {this.random});
+  PuzzleController({required this.audioCache, required this.level, this.random});
 
-  static const _puzzleSize = 4;
-
-  final AudioCache localMusicPlayer;
+  final AudioCache audioCache;
+  final Level level;
   final Random? random;
 
   late Rx<PuzzleState> puzzleState;
@@ -22,13 +22,15 @@ class PuzzleController extends GetxController {
 
   @override
   void onInit() {
-    puzzleState = PuzzleState(puzzle: _generatePuzzle(_puzzleSize).sort()).obs;
+    puzzleState = PuzzleState(puzzle: _generatePuzzle(level).sort()).obs;
     debugPrint("TEST PuzzleController onInit puzzle generated");
     super.onInit();
   }
 
   /// Build a list of tiles - giving each tile their correct position and current position.
-  Puzzle _generatePuzzle(int size, {bool shuffle = true}) {
+  Puzzle _generatePuzzle(Level level, {bool shuffle = true}) {
+    final size = level.size;
+    final stage = level.stage;
     final correctPositions = <Position>[];
     final currentPositions = <Position>[];
     final whitespacePosition = Position(x: size, y: size);
@@ -77,9 +79,11 @@ class PuzzleController extends GetxController {
     return puzzle;
   }
 
-  List<Tile> _getTileListFromPositions(int size,
-      List<Position> correctPositions,
-      List<Position> currentPositions,) {
+  List<Tile> _getTileListFromPositions(
+    int size,
+    List<Position> correctPositions,
+    List<Position> currentPositions,
+  ) {
     final whitespacePosition = Position(x: size, y: size);
     return [
       for (int i = 1; i <= size * size; i++)
@@ -100,7 +104,9 @@ class PuzzleController extends GetxController {
   }
 
   // todo there are different possible results: complete/incomplete=>isMovable=>move=>complete/incomplete, also isNotMovable
-  void moveTile(Tile tappedTile) {
+  void tapTile(Tile tappedTile) {
+    audioCache.play('G_major_scale_1.mp3');
+
     if (puzzleState.value.puzzle.isTileMovable(tappedTile)) {
       final mutablePuzzle = Puzzle(tiles: [...puzzleState.value.puzzle.tiles]);
       final movedPuzzle = mutablePuzzle.moveTiles(tappedTile, []);
@@ -111,7 +117,6 @@ class PuzzleController extends GetxController {
         //   Uint8List byteData =
         // int result = await audioPlayer.play();
         // }
-        localMusicPlayer.play('G_major_scale_1.mp3');
         puzzleState.update((state) {
           state?.puzzle = movedPuzzle.sort();
         });

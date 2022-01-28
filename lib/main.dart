@@ -6,6 +6,7 @@ import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:music_sliding_puzzle/presentation/puzzle_controller.dart';
 
+import 'level.dart';
 import 'view/puzzle_view.dart';
 
 void main() {
@@ -53,7 +54,12 @@ class AppBinding implements Bindings {
       'G_major_scale_14.mp3',
       'G_major_scale_15.mp3',
     ]);
-    Get.lazyPut<PuzzleController>(() => PuzzleController(audioCache));
+    Get.lazyPut<PuzzleController>(
+      () => PuzzleController(
+        audioCache: audioCache,
+        level: Level(size: 4, stage: 1), // todo for more Levels, keep global GameState in this class
+      ),
+    );
   }
 }
 
