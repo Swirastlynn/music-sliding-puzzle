@@ -13,7 +13,15 @@ class PuzzleView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(24),
-      child: Obx(() => _Board(puzzle: controller.puzzle)),
+      child: Column(
+        children: [
+          Obx(() => _Board(puzzle: controller.puzzle)),
+          Container(
+              padding: const EdgeInsets.all(24),
+              child: Obx(() => Text("Moves: ${controller.movesCounter.toString()}"))
+          )
+        ],
+      ),
     );
   }
 }
@@ -88,7 +96,8 @@ class _MusicTile extends GetView<PuzzleController> {
   Widget build(BuildContext context) {
     return TextButton(
       style: TextButton.styleFrom(
-        backgroundColor: tile.isCorrect() ? Colors.lightGreen : const Color.fromRGBO(220, 220, 220, 1.0),
+        backgroundColor:
+            tile.isCorrect() ? Colors.lightGreen : const Color.fromRGBO(220, 220, 220, 1.0),
         // primary: PuzzleColors.white,
         // textStyle: PuzzleTextStyle.headline2.copyWith(
         //   fontSize: tileFontSize,

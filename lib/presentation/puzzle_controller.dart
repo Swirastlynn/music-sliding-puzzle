@@ -19,9 +19,11 @@ class PuzzleController extends GetxController {
 
   get puzzle => puzzleState.value.puzzle;
 
+  get movesCounter => puzzleState.value.movesCounter;
+
   @override
   void onInit() {
-    puzzleState = PuzzleState(puzzle: _generatePuzzle().sort()).obs;
+    puzzleState = PuzzleState(puzzle: _generatePuzzle().sort(), movesCounter: 0).obs;
     debugPrint("TEST PuzzleController onInit puzzle generated");
     super.onInit();
   }
@@ -115,6 +117,7 @@ class PuzzleController extends GetxController {
         // }
         puzzleState.update((state) {
           state?.puzzle = movedPuzzle.sort();
+          state?.movesCounter = state.movesCounter + 1;
         });
       }
     } else {
