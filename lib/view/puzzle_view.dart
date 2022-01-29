@@ -88,6 +88,7 @@ class _MusicTile extends GetView<PuzzleController> {
   Widget build(BuildContext context) {
     return TextButton(
       style: TextButton.styleFrom(
+        backgroundColor: tile.isCorrect() ? Colors.lightGreen : const Color.fromRGBO(220, 220, 220, 1.0),
         // primary: PuzzleColors.white,
         // textStyle: PuzzleTextStyle.headline2.copyWith(
         //   fontSize: tileFontSize,

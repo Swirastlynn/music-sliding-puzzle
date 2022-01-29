@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:equatable/equatable.dart';
 import 'package:music_sliding_puzzle/data/model/position.dart';
 
@@ -26,6 +28,8 @@ class Tile extends Equatable {
 
   /// Denotes if the [Tile] is the whitespace tile or not.
   final bool isWhitespace;
+
+  bool isCorrect() => correctPosition == currentPosition;
 
   /// Create a copy of this [Tile] with updated current position.
   Tile copyWith({required Position currentPosition}) {
