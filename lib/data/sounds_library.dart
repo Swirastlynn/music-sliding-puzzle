@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:music_sliding_puzzle/data/model/tile.dart';
 
@@ -9,7 +11,7 @@ class SoundLibrary {
   final AudioCache audioCache;
   final int stage;
 
-  final List<String> soundsPaths = [
+  final List<String> _soundsPathsStage1 = [
     'stage1/G_major_scale_1.mp3',
     'stage1/G_major_scale_2.mp3',
     'stage1/G_major_scale_3.mp3',
@@ -25,8 +27,9 @@ class SoundLibrary {
     'stage1/G_major_scale_13.mp3',
     'stage1/G_major_scale_14.mp3',
     'stage1/G_major_scale_15.mp3',
-    'stage1/G_major_scale_full.wav',
   ];
+
+  final String _melodyPathStage1 = 'stage1/G_major_scale_full.wav';
 
   final _mapOfStagesToSoundNames = {
     1: [
@@ -52,23 +55,47 @@ class SoundLibrary {
   String soundName(int index) => _mapOfStagesToSoundNames.entries.elementAt(stage - 1).value[index];
 
   void preload() {
-    audioCache.loadAll(soundsPaths);
+    audioCache.loadAll([..._soundsPathsStage1, _melodyPathStage1]);
   }
 
   void playSound(Tile tappedTile) {
     switch (stage) {
       case 1:
-        audioCache.play('stage1/G_major_scale_${tappedTile.value}.mp3');
+        audioCache.play(_soundsPathsStage1[tappedTile.value]);
         break;
       default:
         throw Exception("Unexpected stage number"); // todo custom exceptions class
     }
   }
 
-  void playFullTrack(Tile tappedTile) {
+  void playFullTrack() {
     switch (stage) {
       case 1:
-        audioCache.play('stage1/G_major_scale_full.wav');
+        audioCache.play(_melodyPathStage1);
+        break;
+      default:
+        throw Exception("Unexpected stage number"); // todo custom exceptions class
+    }
+  }
+
+  void playTilesOneByOne(void Function(int counter) onComplete) {
+    StreamSubscription<void>? _subscription;
+    switch (stage) {
+      case 1:
+        int counter = 1;
+        int soundsThreshold = _soundsPathsStage1.length;
+        _subscription = audioCache.fixedPlayer?.onPlayerCompletion.listen(
+          (event) {
+            onComplete(counter);
+            counter++;
+            if (counter == soundsThreshold) {
+              _subscription?.cancel();
+              return;
+            }
+            audioCache.play(_soundsPathsStage1[counter]);
+          },
+        );
+        audioCache.play(_soundsPathsStage1[0]);
         break;
       default:
         throw Exception("Unexpected stage number"); // todo custom exceptions class

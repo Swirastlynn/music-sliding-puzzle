@@ -1,12 +1,18 @@
+import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_sliding_puzzle/data/model/puzzle.dart';
 import 'package:music_sliding_puzzle/data/model/tile.dart';
 import 'package:music_sliding_puzzle/presentation/puzzle_controller.dart';
 
-class PuzzleView extends StatelessWidget {
-  PuzzleView({Key? key}) : super(key: key);
+class PuzzleView extends StatefulWidget {
+  const PuzzleView({Key? key}) : super(key: key);
 
+  @override
+  State<PuzzleView> createState() => _PuzzleViewState();
+}
+
+class _PuzzleViewState extends State<PuzzleView> with AfterLayoutMixin<PuzzleView> {
   final PuzzleController controller = Get.find();
 
   @override
@@ -18,11 +24,15 @@ class PuzzleView extends StatelessWidget {
           Obx(() => _Board(puzzle: controller.puzzle)),
           Container(
               padding: const EdgeInsets.all(24),
-              child: Obx(() => Text("Moves: ${controller.movesCounter.toString()}"))
-          )
+              child: Obx(() => Text("Moves: ${controller.movesCounter.toString()}")))
         ],
       ),
     );
+  }
+
+  @override
+  void afterFirstLayout(BuildContext context) {
+    controller.playMelody();
   }
 }
 
@@ -98,6 +108,7 @@ class _MusicTile extends GetView<PuzzleController> {
       style: TextButton.styleFrom(
         backgroundColor:
             tile.isCorrect() ? Colors.lightGreen : const Color.fromRGBO(220, 220, 220, 1.0),
+        // todo define theme and use it, GetX has built-in support
         // primary: PuzzleColors.white,
         // textStyle: PuzzleTextStyle.headline2.copyWith(
         //   fontSize: tileFontSize,

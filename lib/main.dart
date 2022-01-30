@@ -34,8 +34,8 @@ class AppBinding implements Bindings {
   @override
   void dependencies() {
     Level level = Level(size: 4, stage: 1);
-    AudioPlayer audioPlayer = AudioPlayer();
-    AudioCache audioCache = AudioCache(
+    AudioPlayer audioPlayer = AudioPlayer(playerId: 'my_unique_playerId');
+    AudioCache audioCache = AudioCache( // WARNING: AudioCache is not available for Flutter Web.
       prefix: 'assets/audio/',
       fixedPlayer: audioPlayer,
     );
@@ -45,11 +45,11 @@ class AppBinding implements Bindings {
     );
     Get.lazyPut<PuzzleController>(
       () {
-
         return PuzzleController(
-        soundLibrary: soundLibrary,
-        levelSize: level.size,
-      );
+          soundLibrary: soundLibrary,
+          levelSize: level.size,
+          levelStage: level.stage,
+        );
       },
     );
   }
@@ -66,7 +66,7 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text(title),
       ),
-      body: Center(
+      body: const Center(
         child: PuzzleView(),
       ),
     );

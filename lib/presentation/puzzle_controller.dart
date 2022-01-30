@@ -9,10 +9,16 @@ import 'package:music_sliding_puzzle/data/sounds_library.dart';
 import 'package:music_sliding_puzzle/presentation/puzzle_state.dart';
 
 class PuzzleController extends GetxController {
-  PuzzleController({required this.soundLibrary, required this.levelSize, this.random});
+  PuzzleController({
+    required this.soundLibrary,
+    required this.levelSize,
+    required this.levelStage,
+    this.random,
+  });
 
   final SoundLibrary soundLibrary;
   final int levelSize;
+  final int levelStage;
   final Random? random;
 
   late Rx<PuzzleState> puzzleState;
@@ -92,6 +98,7 @@ class PuzzleController extends GetxController {
             isWhitespace: true,
           )
         else
+
           Tile(
             value: i,
             name: soundLibrary.soundName(i - 1),
@@ -99,6 +106,12 @@ class PuzzleController extends GetxController {
             currentPosition: currentPositions[i - 1],
           )
     ];
+  }
+
+  void playMelody() {
+    soundLibrary.playTilesOneByOne((counter) {
+      debugPrint("play completed");
+    });
   }
 
   // todo there are different possible results: complete/incomplete=>isMovable=>move=>complete/incomplete, also isNotMovable
@@ -111,10 +124,6 @@ class PuzzleController extends GetxController {
       if (movedPuzzle.isComplete()) {
         // todo
       } else {
-        // playLocal() async {
-        //   Uint8List byteData =
-        // int result = await audioPlayer.play();
-        // }
         puzzleState.update((state) {
           state?.puzzle = movedPuzzle.sort();
           state?.movesCounter = state.movesCounter + 1;
