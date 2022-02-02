@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:music_sliding_puzzle/data/model/tile.dart';
 
 class SoundLibrary {
@@ -78,24 +79,32 @@ class SoundLibrary {
     }
   }
 
-  void playTilesOneByOne(void Function(int counter) onComplete) {
+  void playSoundsOneByOne(
+      {required void Function(int soundIndex) onSoundStart,
+      required void Function() onMelodyComplete}) {
     StreamSubscription<void>? _subscription;
     switch (stage) {
       case 1:
-        int counter = 1;
-        int soundsThreshold = _soundsPathsStage1.length;
+        int soundIndex = 0;
+        int outOfBoundIndex = _soundsPathsStage1.length;
+
         _subscription = audioCache.fixedPlayer?.onPlayerCompletion.listen(
           (event) {
-            onComplete(counter);
-            counter++;
-            if (counter == soundsThreshold) {
+            soundIndex++;
+            if (soundIndex == outOfBoundIndex) {
+              onMelodyComplete();
               _subscription?.cancel();
               return;
             }
-            audioCache.play(_soundsPathsStage1[counter]);
+            onSoundStart(soundIndex);
+            debugPrint("onSoundStart soundIndex: $soundIndex playing...");
+            audioCache.play(_soundsPathsStage1[soundIndex]);
           },
         );
-        audioCache.play(_soundsPathsStage1[0]);
+
+        // start playing
+        audioCache.play(_soundsPathsStage1[soundIndex]);
+        onSoundStart(soundIndex);
         break;
       default:
         throw Exception("Unexpected stage number"); // todo custom exceptions class

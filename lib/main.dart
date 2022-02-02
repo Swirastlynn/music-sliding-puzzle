@@ -41,7 +41,7 @@ class AppBinding implements Bindings {
     );
     var soundLibrary = SoundLibrary(
       audioCache: audioCache,
-      stage: level.stage, // todo for more Levels, keep global GameState in this class
+      stage: level.stage, // todo for more Levels, keep global GameState in MyApp class
     );
     Get.lazyPut<PuzzleController>(
       () {

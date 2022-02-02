@@ -7,6 +7,7 @@ import 'package:music_sliding_puzzle/data/model/puzzle.dart';
 import 'package:music_sliding_puzzle/data/model/tile.dart';
 import 'package:music_sliding_puzzle/data/sounds_library.dart';
 import 'package:music_sliding_puzzle/presentation/puzzle_state.dart';
+import 'package:music_sliding_puzzle/presentation/tutorial_state.dart';
 
 class PuzzleController extends GetxController {
   PuzzleController({
@@ -21,7 +22,10 @@ class PuzzleController extends GetxController {
   final int levelStage;
   final Random? random;
 
+  late Rx<TutorialState> tutorialState; // todo or info move to the Tile
   late Rx<PuzzleState> puzzleState;
+
+  get alreadyPlayedTile => tutorialState.value.alreadyPlayedTileNumber;
 
   get puzzle => puzzleState.value.puzzle;
 
@@ -29,6 +33,7 @@ class PuzzleController extends GetxController {
 
   @override
   void onInit() {
+    tutorialState = TutorialState(alreadyPlayedTileNumber: -1).obs;
     puzzleState = PuzzleState(puzzle: _generatePuzzle().sort(), movesCounter: 0).obs;
     debugPrint("TEST PuzzleController onInit puzzle generated");
     super.onInit();
@@ -98,7 +103,6 @@ class PuzzleController extends GetxController {
             isWhitespace: true,
           )
         else
-
           Tile(
             value: i,
             name: soundLibrary.soundName(i - 1),
@@ -109,9 +113,19 @@ class PuzzleController extends GetxController {
   }
 
   void playMelody() {
-    soundLibrary.playTilesOneByOne((counter) {
-      debugPrint("play completed");
-    });
+    soundLibrary.playSoundsOneByOne(
+      onSoundStart: (soundIndex) {
+        tutorialState.update((state) {
+          debugPrint("color tile: ${state?.alreadyPlayedTileNumber}");
+          state?.alreadyPlayedTileNumber = soundIndex + 1;
+        });
+      },
+      onMelodyComplete: () {
+        tutorialState.update((state) {
+          state?.alreadyPlayedTileNumber = -1;
+        });
+      },
+    );
   }
 
   // todo there are different possible results: complete/incomplete=>isMovable=>move=>complete/incomplete, also isNotMovable
@@ -126,7 +140,7 @@ class PuzzleController extends GetxController {
       } else {
         puzzleState.update((state) {
           state?.puzzle = movedPuzzle.sort();
-          state?.movesCounter = state.movesCounter + 1;
+          state?.movesCounter = state.movesCounter;
         });
       }
     } else {

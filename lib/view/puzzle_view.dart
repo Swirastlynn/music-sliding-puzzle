@@ -104,26 +104,33 @@ class _MusicTile extends GetView<PuzzleController> {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      style: TextButton.styleFrom(
-        backgroundColor:
-            tile.isCorrect() ? Colors.lightGreen : const Color.fromRGBO(220, 220, 220, 1.0),
-        // todo define theme and use it, GetX has built-in support
-        // primary: PuzzleColors.white,
-        // textStyle: PuzzleTextStyle.headline2.copyWith(
-        //   fontSize: tileFontSize,
-        // ),
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(12),
+    return Obx(
+      () => TextButton(
+        style: TextButton.styleFrom(
+          backgroundColor: controller.alreadyPlayedTile >= 0 // todo should be inside controller's tutorialState as isTutorial
+              ? (tile.value == controller.alreadyPlayedTile)
+                  ? Colors.redAccent
+                  : const Color.fromRGBO(220, 220, 220, 1.0)
+              : tile.isCorrect()
+                  ? Colors.lightGreen
+                  : const Color.fromRGBO(220, 220, 220, 1.0),
+          // todo define theme and use it, GetX has built-in support
+          // primary: PuzzleColors.white,
+          // textStyle: PuzzleTextStyle.headline2.copyWith(
+          //   fontSize: tileFontSize,
+          // ),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(12),
+            ),
           ),
+        ).copyWith(),
+        onPressed: () => {
+          controller.tapTile(tile),
+        },
+        child: Text(
+          tile.name,
         ),
-      ).copyWith(),
-      onPressed: () => {
-        controller.tapTile(tile),
-      },
-      child: Text(
-        tile.name,
       ),
     );
   }

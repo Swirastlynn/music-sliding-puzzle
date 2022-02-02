@@ -13,7 +13,7 @@ class Tile extends Equatable {
     this.isWhitespace = false,
   });
 
-  /// Value representing the correct position of [Tile] in a list.
+  /// Value representing the correct position of [Tile] in a list. Begins from 1.
   final int value;
 
   /// String representing a name visible to a player.
@@ -30,6 +30,8 @@ class Tile extends Equatable {
   final bool isWhitespace;
 
   bool isCorrect() => correctPosition == currentPosition;
+
+  bool isAlreadyPlayed() => correctPosition == currentPosition;
 
   /// Create a copy of this [Tile] with updated current position.
   Tile copyWith({required Position currentPosition}) {
