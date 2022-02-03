@@ -22,18 +22,18 @@ class PuzzleController extends GetxController {
   final int levelStage;
   final Random? random;
 
-  late Rx<TutorialState> tutorialState; // todo or info move to the Tile
+  late Rx<TutorialState> tutorialState;
   late Rx<PuzzleState> puzzleState;
 
-  get alreadyPlayedTile => tutorialState.value.alreadyPlayedTileNumber;
+  get isTutorial => tutorialState.value.isTutorial;
+  get tutorialPlayingTileNumber => tutorialState.value.tutorialPlayingTileNumber;
 
   get puzzle => puzzleState.value.puzzle;
-
   get movesCounter => puzzleState.value.movesCounter;
 
   @override
   void onInit() {
-    tutorialState = TutorialState(alreadyPlayedTileNumber: -1).obs;
+    tutorialState = TutorialState(tutorialPlayingTileNumber: -1).obs;
     puzzleState = PuzzleState(puzzle: _generatePuzzle().sort(), movesCounter: 0).obs;
     debugPrint("TEST PuzzleController onInit puzzle generated");
     super.onInit();
@@ -116,13 +116,12 @@ class PuzzleController extends GetxController {
     soundLibrary.playSoundsOneByOne(
       onSoundStart: (soundIndex) {
         tutorialState.update((state) {
-          debugPrint("color tile: ${state?.alreadyPlayedTileNumber}");
-          state?.alreadyPlayedTileNumber = soundIndex + 1;
+          state?.tutorialPlayingTileNumber = soundIndex + 1;
         });
       },
       onMelodyComplete: () {
         tutorialState.update((state) {
-          state?.alreadyPlayedTileNumber = -1;
+          state?.tutorialPlayingTileNumber = -1;
         });
       },
     );

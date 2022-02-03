@@ -107,8 +107,8 @@ class _MusicTile extends GetView<PuzzleController> {
     return Obx(
       () => TextButton(
         style: TextButton.styleFrom(
-          backgroundColor: controller.alreadyPlayedTile >= 0 // todo should be inside controller's tutorialState as isTutorial
-              ? (tile.value == controller.alreadyPlayedTile)
+          backgroundColor: controller.isTutorial
+              ? (tile.value == controller.tutorialPlayingTileNumber)
                   ? Colors.redAccent
                   : const Color.fromRGBO(220, 220, 220, 1.0)
               : tile.isCorrect()

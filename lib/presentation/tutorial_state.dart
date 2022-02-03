@@ -1,5 +1,7 @@
 class TutorialState {
-  TutorialState({required this.alreadyPlayedTileNumber});
+  TutorialState({required this.tutorialPlayingTileNumber});
 
-  int alreadyPlayedTileNumber;
+  int tutorialPlayingTileNumber = -1;
+
+  get isTutorial => tutorialPlayingTileNumber > 0;
 }
