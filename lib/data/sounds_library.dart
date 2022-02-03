@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:music_sliding_puzzle/custom_exceptions.dart';
 import 'package:music_sliding_puzzle/data/model/tile.dart';
 
 class SoundLibrary {
@@ -64,7 +65,7 @@ class SoundLibrary {
         audioCache.play(_soundsPathsStage1[tappedTile.value]);
         break;
       default:
-        throw Exception("Unexpected stage number"); // todo custom exceptions class
+        throw const UnexpectedStageNumberException();
     }
   }
 
@@ -74,7 +75,7 @@ class SoundLibrary {
         audioCache.play(_melodyPathStage1);
         break;
       default:
-        throw Exception("Unexpected stage number"); // todo custom exceptions class
+        throw const UnexpectedStageNumberException();
     }
   }
 
@@ -105,7 +106,7 @@ class SoundLibrary {
         onSoundStart(soundIndex);
         break;
       default:
-        throw Exception("Unexpected stage number"); // todo custom exceptions class
+        throw const UnexpectedStageNumberException();
     }
   }
 }
