@@ -21,10 +21,13 @@ class _PuzzleViewState extends State<PuzzleView> with AfterLayoutMixin<PuzzleVie
       padding: const EdgeInsets.all(24),
       child: Column(
         children: [
-          Obx(() => _Board(puzzle: controller.puzzle)),
           Container(
               padding: const EdgeInsets.all(24),
-              child: Obx(() => Text("Moves: ${controller.movesCounter.toString()}")))
+              child: Obx(() => Text("Moves: ${controller.movesCounter.toString()}"))),
+          Container(
+            padding: const EdgeInsets.only(top: 96),
+            child: Obx(() => _Board(puzzle: controller.puzzle)),
+          ),
         ],
       ),
     );
