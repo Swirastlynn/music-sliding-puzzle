@@ -62,7 +62,7 @@ class SoundLibrary {
   void playSound(Tile tappedTile) {
     switch (stage) {
       case 1:
-        audioCache.play(_soundsPathsStage1[tappedTile.value]);
+        audioCache.play(_soundsPathsStage1[tappedTile.value - 1]);
         break;
       default:
         throw const UnexpectedStageNumberException();
