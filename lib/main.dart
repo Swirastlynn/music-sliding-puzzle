@@ -4,11 +4,11 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_instance/src/bindings_interface.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:music_sliding_puzzle/data/sounds_library.dart';
-import 'package:music_sliding_puzzle/presentation/puzzle_controller.dart';
 
+import 'core_feature/data/sounds_library.dart';
+import 'core_feature/presentation/puzzle_controller.dart';
+import 'core_feature/view/puzzle_view.dart';
 import 'level.dart';
-import 'view/puzzle_view.dart';
 
 void main() {
   runApp(const MyApp());

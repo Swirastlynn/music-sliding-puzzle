@@ -1,9 +1,9 @@
 import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:music_sliding_puzzle/data/model/puzzle.dart';
-import 'package:music_sliding_puzzle/data/model/tile.dart';
-import 'package:music_sliding_puzzle/presentation/puzzle_controller.dart';
+import 'package:music_sliding_puzzle/core_feature/data/model/puzzle.dart';
+import 'package:music_sliding_puzzle/core_feature/data/model/tile.dart';
+import 'package:music_sliding_puzzle/core_feature/presentation/puzzle_controller.dart';
 
 class PuzzleView extends StatefulWidget {
   const PuzzleView({Key? key}) : super(key: key);

@@ -2,12 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:music_sliding_puzzle/data/model/position.dart';
-import 'package:music_sliding_puzzle/data/model/puzzle.dart';
-import 'package:music_sliding_puzzle/data/model/tile.dart';
-import 'package:music_sliding_puzzle/data/sounds_library.dart';
-import 'package:music_sliding_puzzle/presentation/puzzle_state.dart';
-import 'package:music_sliding_puzzle/presentation/tutorial_state.dart';
+import 'package:music_sliding_puzzle/core_feature/data/model/position.dart';
+import 'package:music_sliding_puzzle/core_feature/data/model/puzzle.dart';
+import 'package:music_sliding_puzzle/core_feature/data/model/tile.dart';
+import 'package:music_sliding_puzzle/core_feature/data/sounds_library.dart';
+import 'package:music_sliding_puzzle/core_feature/presentation/puzzle_state.dart';
+import 'package:music_sliding_puzzle/core_feature/presentation/tutorial_state.dart';
 
 class PuzzleController extends GetxController {
   PuzzleController({

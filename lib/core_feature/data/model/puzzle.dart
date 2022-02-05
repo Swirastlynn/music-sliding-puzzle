@@ -28,7 +28,8 @@ import 'dart:ui';
 
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
-import 'package:music_sliding_puzzle/data/model/tile.dart';
+
+import 'tile.dart';
 
 /// Model for a puzzle.
 class Puzzle extends Equatable {

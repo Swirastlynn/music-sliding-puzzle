@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:music_sliding_puzzle/custom_exceptions.dart';
-import 'package:music_sliding_puzzle/data/model/tile.dart';
+import 'package:music_sliding_puzzle/common/custom_exceptions.dart';
+
+import 'model/tile.dart';
 
 class SoundLibrary {
   SoundLibrary({required this.audioCache, required this.stage}) {

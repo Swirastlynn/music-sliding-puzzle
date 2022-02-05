@@ -1,7 +1,6 @@
-import 'dart:ffi';
-
 import 'package:equatable/equatable.dart';
-import 'package:music_sliding_puzzle/data/model/position.dart';
+
+import 'position.dart';
 
 /// Model for a puzzle tile.
 class Tile extends Equatable {
