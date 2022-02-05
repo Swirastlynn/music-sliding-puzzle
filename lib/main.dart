@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.blue, // todo use MaterialColor class like this?
       ),
       home: const MyHomePage(title: 'Music Sliding Puzzle'),
       initialBinding: AppBinding(),

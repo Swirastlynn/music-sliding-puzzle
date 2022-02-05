@@ -1,6 +1,8 @@
 import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:music_sliding_puzzle/common/theme/colors.dart';
+import 'package:music_sliding_puzzle/common/theme/text_styles.dart';
 import 'package:music_sliding_puzzle/core_feature/data/model/puzzle.dart';
 import 'package:music_sliding_puzzle/core_feature/data/model/tile.dart';
 import 'package:music_sliding_puzzle/core_feature/presentation/puzzle_controller.dart';
@@ -109,19 +111,16 @@ class _MusicTile extends GetView<PuzzleController> {
   Widget build(BuildContext context) {
     return Obx(
       () => TextButton(
-        style: TextButton.styleFrom(
+        style: TextButton.styleFrom( // todo TextButton should be styled inside Theme
           backgroundColor: controller.isTutorial
               ? (tile.value == controller.tutorialPlayingTileNumber)
-                  ? Colors.redAccent
-                  : const Color.fromRGBO(220, 220, 220, 1.0)
+                  ? PuzzleColors.goldenRod
+                  : PuzzleColors.indigo
               : tile.isCorrect()
-                  ? Colors.lightGreen
-                  : const Color.fromRGBO(220, 220, 220, 1.0),
-          // todo define theme and use it, GetX has built-in support
-          // primary: PuzzleColors.white,
-          // textStyle: PuzzleTextStyle.headline2.copyWith(
-          //   fontSize: tileFontSize,
-          // ),
+                  ? PuzzleColors.green
+                  : PuzzleColors.indigo,
+          primary: PuzzleColors.white,
+          textStyle: PuzzleTextStyle.body,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
               Radius.circular(12),
