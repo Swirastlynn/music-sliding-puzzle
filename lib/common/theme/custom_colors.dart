@@ -1,7 +1,9 @@
 import 'package:flutter/widgets.dart';
 
 /// Defines the color palette for the puzzle UI.
-abstract class PuzzleColors {
+abstract class CustomColors {
+
+  static const Color primary = indigo;
 
   static const Color green = Color(0xFF52B342);
   static const Color greenContrast = Color(0xFF12443E);

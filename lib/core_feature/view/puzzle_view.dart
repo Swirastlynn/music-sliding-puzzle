@@ -1,8 +1,7 @@
 import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:music_sliding_puzzle/common/theme/colors.dart';
-import 'package:music_sliding_puzzle/common/theme/text_styles.dart';
+import 'package:music_sliding_puzzle/common/theme/custom_colors.dart';
 import 'package:music_sliding_puzzle/core_feature/data/model/puzzle.dart';
 import 'package:music_sliding_puzzle/core_feature/data/model/tile.dart';
 import 'package:music_sliding_puzzle/core_feature/presentation/puzzle_controller.dart';
@@ -110,23 +109,27 @@ class _MusicTile extends GetView<PuzzleController> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => TextButton(
-        style: TextButton.styleFrom( // todo TextButton should be styled inside Theme
+      () => ElevatedButton(
+        style: TextButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
           backgroundColor: controller.isTutorial
               ? (tile.value == controller.tutorialPlayingTileNumber)
-                  ? PuzzleColors.goldenRod
-                  : PuzzleColors.indigo
+                  ? CustomColors.goldenRod
+                  : CustomColors.indigo
               : tile.isCorrect()
-                  ? PuzzleColors.green
-                  : PuzzleColors.indigo,
-          primary: PuzzleColors.white,
-          textStyle: PuzzleTextStyle.body,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(12),
-            ),
-          ),
-        ).copyWith(),
+                  ? CustomColors.green
+                  : CustomColors.indigo,
+          primary: controller.isTutorial
+              ? (tile.value == controller.tutorialPlayingTileNumber)
+                  ? CustomColors.goldenRodContrast
+                  : CustomColors.indigoContrast
+              : tile.isCorrect()
+                  ? CustomColors.greenContrast
+                  : CustomColors.indigoContrast,
+          textStyle: Theme.of(context).textTheme.bodyText1,
+        ),
         onPressed: () => {
           controller.tapTile(tile),
         },
