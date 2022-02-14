@@ -133,17 +133,21 @@ class _MusicTile extends GetView<PuzzleController> {
           ),
           color: controller.isTutorial
               ? (tile.value == controller.tutorialPlayingTileNumber)
-                  ? CustomColors.goldenRodContrast
+                  ? CustomColors.goldenRod
                   : CustomColors.transparent
               : tile.isCorrect()
-                  ? CustomColors.goldenRodContrast
+                  ? CustomColors.goldenRod
                   : CustomColors.transparent,
         ),
         child: InkResponse(
+          splashColor: Colors.yellow,
+          highlightColor: Colors.blue,
+          highlightShape: BoxShape.rectangle,
           onTap: () {
             controller.tapTile(tile);
           },
           child: Ink(
+            color: Colors.red,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
