@@ -116,38 +116,31 @@ class _MusicTile extends GetView<PuzzleController> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => Container(
-        padding: const EdgeInsets.all(4.0),
-        decoration: ShapeDecoration(
-          shape: CircleBorder(
-            side: BorderSide(
-              width: 1,
-              color: controller.isTutorial
-                  ? (tile.value == controller.tutorialPlayingTileNumber)
-                      ? CustomColors.indigo
-                      : CustomColors.goldenRod
-                  : tile.isCorrect()
-                      ? CustomColors.indigo
-                      : CustomColors.goldenRod,
-            ),
+      () => Material(
+        shape: CircleBorder(
+          side: BorderSide(
+            width: 1,
+            color: controller.isTutorial
+                ? (tile.value == controller.tutorialPlayingTileNumber)
+                    ? CustomColors.indigo
+                    : CustomColors.goldenRod
+                : tile.isCorrect()
+                    ? CustomColors.indigo
+                    : CustomColors.goldenRod,
           ),
-          color: controller.isTutorial
-              ? (tile.value == controller.tutorialPlayingTileNumber)
-                  ? CustomColors.goldenRod
-                  : CustomColors.transparent
-              : tile.isCorrect()
-                  ? CustomColors.goldenRod
-                  : CustomColors.transparent,
         ),
+        color: controller.isTutorial
+            ? (tile.value == controller.tutorialPlayingTileNumber)
+                ? CustomColors.goldenRod
+                : CustomColors.transparent
+            : tile.isCorrect()
+                ? CustomColors.goldenRod
+                : CustomColors.transparent,
         child: InkResponse(
-          splashColor: Colors.yellow,
-          highlightColor: Colors.blue,
-          highlightShape: BoxShape.rectangle,
           onTap: () {
             controller.tapTile(tile);
           },
           child: Ink(
-            color: Colors.red,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
