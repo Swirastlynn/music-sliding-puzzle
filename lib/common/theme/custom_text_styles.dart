@@ -46,7 +46,7 @@ class CustomTextStyles {
 
   static TextStyle get bodyLargeBold {
     return _baseTextStyle.copyWith(
-      fontSize: 16,
+      fontSize: 18,
       height: 1.5,
       fontWeight: CustomFontWeight.bold,
     );

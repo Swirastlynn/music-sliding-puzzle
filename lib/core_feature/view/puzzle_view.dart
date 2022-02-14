@@ -19,14 +19,14 @@ class _PuzzleViewState extends State<PuzzleView> with AfterLayoutMixin<PuzzleVie
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(20),
       child: Column(
         children: [
           Container(
               padding: const EdgeInsets.all(24),
               child: Obx(() => Text("Moves: ${controller.movesCounter.toString()}"))),
           Container(
-            padding: const EdgeInsets.only(top: 96),
+            padding: const EdgeInsets.only(top: 144),
             child: Obx(() => _Board(puzzle: controller.puzzle)),
           ),
         ],
@@ -49,21 +49,28 @@ class _Board extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = puzzle.getDimension();
     if (size == 0) return const CircularProgressIndicator();
-    return GridView.count(
-      padding: EdgeInsets.zero,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      crossAxisCount: size,
-      mainAxisSpacing: 8,
-      crossAxisSpacing: 8,
-      children: puzzle.tiles
-          .map(
-            (tile) => _Tile(
-              key: Key('tile_${tile.value.toString()}'),
-              tile: tile,
-            ),
-          )
-          .toList(),
+    return Container(
+      padding: const EdgeInsets.all(3),
+      // decoration: BoxDecoration(
+      //   borderRadius: BorderRadius.circular(12),
+      //   border: Border.all(color: CustomColors.goldenRodTransparent, width: 1.5),
+      // ),
+      child: GridView.count(
+        padding: EdgeInsets.zero,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        crossAxisCount: size,
+        crossAxisSpacing: 8.0,
+        mainAxisSpacing: 8.0,
+        children: puzzle.tiles
+            .map(
+              (tile) => _Tile(
+                key: Key('tile_${tile.value.toString()}'),
+                tile: tile,
+              ),
+            )
+            .toList(),
+      ),
     );
   }
 }
@@ -109,32 +116,53 @@ class _MusicTile extends GetView<PuzzleController> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => ElevatedButton(
-        style: TextButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+      () => Container(
+        padding: const EdgeInsets.all(4.0),
+        decoration: ShapeDecoration(
+          shape: CircleBorder(
+            side: BorderSide(
+              width: 1,
+              color: controller.isTutorial
+                  ? (tile.value == controller.tutorialPlayingTileNumber)
+                      ? CustomColors.indigo
+                      : CustomColors.goldenRod
+                  : tile.isCorrect()
+                      ? CustomColors.indigo
+                      : CustomColors.goldenRod,
+            ),
           ),
-          backgroundColor: controller.isTutorial
-              ? (tile.value == controller.tutorialPlayingTileNumber)
-                  ? CustomColors.goldenRod
-                  : CustomColors.indigo
-              : tile.isCorrect()
-                  ? CustomColors.green
-                  : CustomColors.indigo,
-          primary: controller.isTutorial
+          color: controller.isTutorial
               ? (tile.value == controller.tutorialPlayingTileNumber)
                   ? CustomColors.goldenRodContrast
-                  : CustomColors.indigoContrast
+                  : CustomColors.transparent
               : tile.isCorrect()
-                  ? CustomColors.greenContrast
-                  : CustomColors.indigoContrast,
-          textStyle: Theme.of(context).textTheme.bodyText1,
+                  ? CustomColors.goldenRodContrast
+                  : CustomColors.transparent,
         ),
-        onPressed: () => {
-          controller.tapTile(tile),
-        },
-        child: Text(
-          tile.name,
+        child: InkResponse(
+          onTap: () {
+            controller.tapTile(tile);
+          },
+          child: Ink(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text(
+                    tile.name,
+                    style: Theme.of(context).textTheme.bodyText2,
+                  ),
+                ),
+                const Icon(
+                  Icons.audiotrack,
+                  color: CustomColors.gradientBottom,
+                  size: 20.0,
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

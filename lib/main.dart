@@ -16,7 +16,7 @@ import 'level.dart';
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
-      statusBarColor: CustomColors.primary,
+      statusBarColor: CustomColors.richBlack,
       systemNavigationBarColor: Colors.transparent,
     ),
   );
@@ -71,11 +71,21 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
-      body: const Center(
-        child: PuzzleView(),
+      body: Center(
+        child: Container(
+          // color: CustomColors.grayDark,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                stops: [0.1, 1],
+                colors: [
+                  CustomColors.gradientMiddle,
+                  CustomColors.gradientTop,
+                ],
+              ),
+            ),
+            child: const PuzzleView()),
       ),
     );
   }
