@@ -116,50 +116,104 @@ class _MusicTile extends GetView<PuzzleController> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => Material(
-        shape: CircleBorder(
-          side: BorderSide(
-            width: 1,
+      () => Stack(
+        fit: StackFit.expand,
+        children: [
+          Material(
+            shape: CircleBorder(
+              side: BorderSide(
+                width: 1,
+                color: controller.isTutorial
+                    ? (tile.value == controller.tutorialPlayingTileNumber)
+                        ? CustomColors.indigo
+                        : CustomColors.goldenRod
+                    : tile.isCorrect()
+                        ? CustomColors.indigo
+                        : CustomColors.goldenRod,
+              ),
+            ),
             color: controller.isTutorial
                 ? (tile.value == controller.tutorialPlayingTileNumber)
-                    ? CustomColors.indigo
-                    : CustomColors.goldenRod
+                    ? CustomColors.goldenRod
+                    : CustomColors.transparent
                 : tile.isCorrect()
-                    ? CustomColors.indigo
-                    : CustomColors.goldenRod,
-          ),
-        ),
-        color: controller.isTutorial
-            ? (tile.value == controller.tutorialPlayingTileNumber)
-                ? CustomColors.goldenRod
-                : CustomColors.transparent
-            : tile.isCorrect()
-                ? CustomColors.goldenRod
-                : CustomColors.transparent,
-        child: InkResponse(
-          onTap: () {
-            controller.tapTile(tile);
-          },
-          child: Ink(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Text(
-                    tile.name,
-                    style: Theme.of(context).textTheme.bodyText2,
-                  ),
+                    ? CustomColors.goldenRod
+                    : CustomColors.transparent,
+            child: InkResponse(
+              onTap: () {
+                controller.tapTile(tile);
+              },
+              child: Ink(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Text(
+                        tile.name,
+                        style: Theme.of(context).textTheme.bodyText2,
+                      ),
+                    ),
+                    const Icon(
+                      Icons.audiotrack,
+                      color: CustomColors.gradientBottom,
+                      size: 20.0,
+                    ),
+                  ],
                 ),
-                const Icon(
-                  Icons.audiotrack,
-                  color: CustomColors.gradientBottom,
-                  size: 20.0,
-                ),
-              ],
+              ),
             ),
           ),
+          const _MusicTileAnimatedSound(),
+        ],
+      ),
+    );
+  }
+}
+
+class _MusicTileAnimatedSound extends StatefulWidget {
+  const _MusicTileAnimatedSound({Key? key}) : super(key: key);
+
+  @override
+  State<_MusicTileAnimatedSound> createState() => _MusicTileAnimatedSoundState();
+}
+
+class _MusicTileAnimatedSoundState extends State<_MusicTileAnimatedSound> {
+  double _scale = 1.0;
+  double _visible = 1.0;
+
+  void _changeScale() {
+    setState(() => _scale = _scale == 1.0 ? 1.2 : 1.0);
+  }
+
+  void _changeVisibility() {
+    setState(() => _visible = _visible == 1.0 ? 0.0 : 1.0);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedOpacity(
+      opacity: _visible,
+      duration: const Duration(milliseconds: 200),
+      child: AnimatedScale(
+        scale: _scale,
+        duration: const Duration(milliseconds: 200),
+        child: GestureDetector(
+          child: Container(
+            decoration: ShapeDecoration(
+              shape: CircleBorder(
+                side: BorderSide(
+                  width: _scale,
+                  color: CustomColors.goldenRod,
+                ),
+              ),
+            ),
+          ),
+          onTap: () {
+            _changeScale();
+            _changeVisibility();
+          },
         ),
       ),
     );
