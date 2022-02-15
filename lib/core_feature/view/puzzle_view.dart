@@ -50,7 +50,7 @@ class _Board extends StatelessWidget {
     final size = puzzle.getDimension();
     if (size == 0) return const CircularProgressIndicator();
     return Container(
-      padding: const EdgeInsets.all(3),
+      padding: const EdgeInsets.all(8),
       // decoration: BoxDecoration(
       //   borderRadius: BorderRadius.circular(12),
       //   border: Border.all(color: CustomColors.goldenRodTransparent, width: 1.5),
@@ -62,6 +62,7 @@ class _Board extends StatelessWidget {
         crossAxisCount: size,
         crossAxisSpacing: 8.0,
         mainAxisSpacing: 8.0,
+        clipBehavior: Clip.none,
         children: puzzle.tiles
             .map(
               (tile) => _Tile(
@@ -106,36 +107,45 @@ class _WhitespaceTile extends StatelessWidget {
 }
 
 class _MusicTile extends GetView<PuzzleController> {
-  const _MusicTile({
+  _MusicTile({
     Key? key,
     required this.tile,
   }) : super(key: key);
 
   final Tile tile;
 
+  late final TileAnimationStateController tileAnimationStateController;
+
   @override
   Widget build(BuildContext context) {
+    Get.lazyPut<TileAnimationStateController>(
+          () {
+        return TileAnimationStateController();
+      },
+    );
+    tileAnimationStateController = Get.find();
+
     return Obx(
       () => Material(
-          shape: CircleBorder(
-            side: BorderSide(
-              width: 1,
-              color: controller.isTutorial
-                  ? (tile.value == controller.tutorialPlayingTileNumber)
-                  ? CustomColors.indigo
-                  : CustomColors.goldenRod
-                  : tile.isCorrect()
-                  ? CustomColors.indigo
-                  : CustomColors.goldenRod,
-            ),
+        shape: CircleBorder(
+          side: BorderSide(
+            width: 1,
+            color: controller.isTutorial
+                ? (tile.value == controller.tutorialPlayingTileNumber)
+                    ? CustomColors.indigo
+                    : CustomColors.goldenRod
+                : tile.isCorrect()
+                    ? CustomColors.indigo
+                    : CustomColors.goldenRod,
           ),
-          color: controller.isTutorial
-              ? (tile.value == controller.tutorialPlayingTileNumber)
-              ? CustomColors.goldenRod
-              : CustomColors.transparent
-              : tile.isCorrect()
-              ? CustomColors.goldenRod
-              : CustomColors.transparent,
+        ),
+        color: controller.isTutorial
+            ? (tile.value == controller.tutorialPlayingTileNumber)
+                ? CustomColors.goldenRod
+                : CustomColors.transparent
+            : tile.isCorrect()
+                ? CustomColors.goldenRod
+                : CustomColors.transparent,
         child: InkResponse(
           child: Stack(
             fit: StackFit.expand,
@@ -165,6 +175,8 @@ class _MusicTile extends GetView<PuzzleController> {
           ),
           onTap: () {
             controller.tapTile(tile);
+            tileAnimationStateController.changeScale();
+            tileAnimationStateController.changeVisibility();
           },
         ),
       ),
@@ -172,7 +184,8 @@ class _MusicTile extends GetView<PuzzleController> {
   }
 }
 
-class MusicTileScale extends StatefulWidget { // todo or intercept touch event, or pass the event from the top to here
+class MusicTileScale extends StatefulWidget {
+  // todo or intercept touch event, or pass the event from the top to here
   const MusicTileScale({Key? key}) : super(key: key);
 
   @override
@@ -180,36 +193,52 @@ class MusicTileScale extends StatefulWidget { // todo or intercept touch event, 
 }
 
 class MusicTileScaleState extends State<MusicTileScale> {
-  double _scale = 1.0;
-  double _visible = 1.0;
+  late final TileAnimationStateController tileAnimationStateController;
 
-  void _changeScale() {
-    setState(() => _scale = _scale == 1.0 ? 1.2 : 1.0);
-  }
-
-  void _changeVisibility() {
-    setState(() => _visible = _visible == 1.0 ? 0.0 : 1.0);
+  @override
+  void initState() {
+    tileAnimationStateController = Get.find();
   }
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedOpacity(
-      opacity: _visible,
-      duration: const Duration(milliseconds: 200),
-      child: AnimatedScale(
-        scale: _scale,
-        duration: const Duration(milliseconds: 200),
-        child: Container(
-          decoration: ShapeDecoration(
-            shape: CircleBorder(
-              side: BorderSide(
-                width: _scale,
-                color: CustomColors.goldenRod,
+    return Obx(
+      () => AnimatedOpacity(
+        opacity: tileAnimationStateController.visible,
+        duration: const Duration(milliseconds: 300),
+        child: AnimatedScale(
+          scale: tileAnimationStateController.scale,
+          duration: const Duration(milliseconds: 300),
+          child: Container(
+            decoration: ShapeDecoration(
+              shape: CircleBorder(
+                side: BorderSide(
+                  width: tileAnimationStateController.scale,
+                  color: CustomColors.goldenRod,
+                ),
               ),
             ),
           ),
         ),
       ),
     );
+  }
+}
+
+class TileAnimationStateController extends GetxController {
+  // final _tileAnimationState =
+  final _scale = 1.0.obs;
+  final _visible = 1.0.obs;
+
+  double get scale => _scale.value;
+
+  double get visible => _visible.value;
+
+  void changeScale() {
+    _scale.value = _scale.value == 1.0 ? 1.2 : 1.0;
+  }
+
+  void changeVisibility() {
+    _visible.value = _visible.value == 1.0 ? 0.0 : 1.0;
   }
 }
