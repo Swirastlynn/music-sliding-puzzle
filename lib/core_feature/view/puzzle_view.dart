@@ -6,6 +6,8 @@ import 'package:music_sliding_puzzle/core_feature/data/model/puzzle.dart';
 import 'package:music_sliding_puzzle/core_feature/data/model/tile.dart';
 import 'package:music_sliding_puzzle/core_feature/presentation/puzzle_controller.dart';
 
+import 'sound_animation.dart';
+
 class PuzzleView extends StatefulWidget {
   const PuzzleView({Key? key}) : super(key: key);
 
@@ -91,7 +93,11 @@ class _Tile extends StatelessWidget {
         : _MusicTile(
             key: Key('simple_tile_${tile.value}'),
             tile: tile,
-          );
+            // todo Dependency Injection?
+            soundAnimationStateController: Get.put(
+              SoundAnimationStateController(),
+              tag: tile.value.toString(),
+            ));
   }
 }
 
@@ -107,25 +113,14 @@ class _WhitespaceTile extends StatelessWidget {
 }
 
 class _MusicTile extends GetView<PuzzleController> {
-  _MusicTile({
-    Key? key,
-    required this.tile,
-  }) : super(key: key);
+  const _MusicTile({Key? key, required this.tile, required this.soundAnimationStateController})
+      : super(key: key);
 
   final Tile tile;
-
-  late final TileAnimationStateController tileAnimationStateController;
+  final SoundAnimationStateController soundAnimationStateController;
 
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut<TileAnimationStateController>(
-      () {
-        return TileAnimationStateController();
-      },
-      tag: tile.value.toString(),
-    );
-    tileAnimationStateController = Get.find(tag: tile.value.toString());
-
     return Obx(
       () => Material(
         shape: CircleBorder(
@@ -171,79 +166,16 @@ class _MusicTile extends GetView<PuzzleController> {
                   ],
                 ),
               ),
-              MusicTileScale(tile),
+              SoundAnimationWidget(soundAnimationStateController),
             ],
           ),
           onTap: () {
             controller.tapTile(tile);
-            tileAnimationStateController.changeScale();
-            tileAnimationStateController.changeVisibility();
+            soundAnimationStateController.changeScale();
+            soundAnimationStateController.changeVisibility();
           },
         ),
       ),
     );
-  }
-}
-
-class MusicTileScale extends StatefulWidget {
-  const MusicTileScale(this.tile, {Key? key}) : super(key: key);
-
-  final Tile tile;
-
-  @override
-  State<MusicTileScale> createState() => MusicTileScaleState(tile.value.toString());
-}
-
-class MusicTileScaleState extends State<MusicTileScale> {
-  late final TileAnimationStateController tileAnimationStateController;
-
-  MusicTileScaleState(this.tag);
-
-  final String tag;
-
-  @override
-  void initState() {
-    tileAnimationStateController = Get.find(tag: tag);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Obx(
-      () => AnimatedOpacity(
-        opacity: tileAnimationStateController.visible,
-        duration: const Duration(milliseconds: 300),
-        child: AnimatedScale(
-          scale: tileAnimationStateController.scale,
-          duration: const Duration(milliseconds: 300),
-          child: Container(
-            decoration: ShapeDecoration(
-              shape: CircleBorder(
-                side: BorderSide(
-                  width: tileAnimationStateController.scale,
-                  color: CustomColors.goldenRod,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class TileAnimationStateController extends GetxController {
-  final _scale = 1.0.obs;
-  final _visible = 1.0.obs;
-
-  double get scale => _scale.value;
-
-  double get visible => _visible.value;
-
-  void changeScale() {
-    _scale.value = _scale.value == 1.0 ? 1.2 : 1.0;
-  }
-
-  void changeVisibility() {
-    _visible.value = _visible.value == 1.0 ? 0.0 : 1.0;
   }
 }
