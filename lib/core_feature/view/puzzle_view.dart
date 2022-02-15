@@ -119,11 +119,12 @@ class _MusicTile extends GetView<PuzzleController> {
   @override
   Widget build(BuildContext context) {
     Get.lazyPut<TileAnimationStateController>(
-          () {
+      () {
         return TileAnimationStateController();
       },
+      tag: tile.value.toString(),
     );
-    tileAnimationStateController = Get.find();
+    tileAnimationStateController = Get.find(tag: tile.value.toString());
 
     return Obx(
       () => Material(
@@ -170,7 +171,7 @@ class _MusicTile extends GetView<PuzzleController> {
                   ],
                 ),
               ),
-              const MusicTileScale(),
+              MusicTileScale(tile),
             ],
           ),
           onTap: () {
@@ -185,19 +186,24 @@ class _MusicTile extends GetView<PuzzleController> {
 }
 
 class MusicTileScale extends StatefulWidget {
-  // todo or intercept touch event, or pass the event from the top to here
-  const MusicTileScale({Key? key}) : super(key: key);
+  const MusicTileScale(this.tile, {Key? key}) : super(key: key);
+
+  final Tile tile;
 
   @override
-  State<MusicTileScale> createState() => MusicTileScaleState();
+  State<MusicTileScale> createState() => MusicTileScaleState(tile.value.toString());
 }
 
 class MusicTileScaleState extends State<MusicTileScale> {
   late final TileAnimationStateController tileAnimationStateController;
 
+  MusicTileScaleState(this.tag);
+
+  final String tag;
+
   @override
   void initState() {
-    tileAnimationStateController = Get.find();
+    tileAnimationStateController = Get.find(tag: tag);
   }
 
   @override
@@ -226,7 +232,6 @@ class MusicTileScaleState extends State<MusicTileScale> {
 }
 
 class TileAnimationStateController extends GetxController {
-  // final _tileAnimationState =
   final _scale = 1.0.obs;
   final _visible = 1.0.obs;
 
