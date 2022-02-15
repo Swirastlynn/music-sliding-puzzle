@@ -116,34 +116,31 @@ class _MusicTile extends GetView<PuzzleController> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => Stack(
-        fit: StackFit.expand,
-        children: [
-          Material(
-            shape: CircleBorder(
-              side: BorderSide(
-                width: 1,
-                color: controller.isTutorial
-                    ? (tile.value == controller.tutorialPlayingTileNumber)
-                        ? CustomColors.indigo
-                        : CustomColors.goldenRod
-                    : tile.isCorrect()
-                        ? CustomColors.indigo
-                        : CustomColors.goldenRod,
-              ),
+      () => Material(
+          shape: CircleBorder(
+            side: BorderSide(
+              width: 1,
+              color: controller.isTutorial
+                  ? (tile.value == controller.tutorialPlayingTileNumber)
+                  ? CustomColors.indigo
+                  : CustomColors.goldenRod
+                  : tile.isCorrect()
+                  ? CustomColors.indigo
+                  : CustomColors.goldenRod,
             ),
-            color: controller.isTutorial
-                ? (tile.value == controller.tutorialPlayingTileNumber)
-                    ? CustomColors.goldenRod
-                    : CustomColors.transparent
-                : tile.isCorrect()
-                    ? CustomColors.goldenRod
-                    : CustomColors.transparent,
-            child: InkResponse(
-              onTap: () {
-                controller.tapTile(tile);
-              },
-              child: Ink(
+          ),
+          color: controller.isTutorial
+              ? (tile.value == controller.tutorialPlayingTileNumber)
+              ? CustomColors.goldenRod
+              : CustomColors.transparent
+              : tile.isCorrect()
+              ? CustomColors.goldenRod
+              : CustomColors.transparent,
+        child: InkResponse(
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              Ink(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -163,23 +160,26 @@ class _MusicTile extends GetView<PuzzleController> {
                   ],
                 ),
               ),
-            ),
+              const MusicTileScale(),
+            ],
           ),
-          const _MusicTileAnimatedSound(),
-        ],
+          onTap: () {
+            controller.tapTile(tile);
+          },
+        ),
       ),
     );
   }
 }
 
-class _MusicTileAnimatedSound extends StatefulWidget {
-  const _MusicTileAnimatedSound({Key? key}) : super(key: key);
+class MusicTileScale extends StatefulWidget { // todo or intercept touch event, or pass the event from the top to here
+  const MusicTileScale({Key? key}) : super(key: key);
 
   @override
-  State<_MusicTileAnimatedSound> createState() => _MusicTileAnimatedSoundState();
+  State<MusicTileScale> createState() => MusicTileScaleState();
 }
 
-class _MusicTileAnimatedSoundState extends State<_MusicTileAnimatedSound> {
+class MusicTileScaleState extends State<MusicTileScale> {
   double _scale = 1.0;
   double _visible = 1.0;
 
@@ -199,21 +199,15 @@ class _MusicTileAnimatedSoundState extends State<_MusicTileAnimatedSound> {
       child: AnimatedScale(
         scale: _scale,
         duration: const Duration(milliseconds: 200),
-        child: GestureDetector(
-          child: Container(
-            decoration: ShapeDecoration(
-              shape: CircleBorder(
-                side: BorderSide(
-                  width: _scale,
-                  color: CustomColors.goldenRod,
-                ),
+        child: Container(
+          decoration: ShapeDecoration(
+            shape: CircleBorder(
+              side: BorderSide(
+                width: _scale,
+                color: CustomColors.goldenRod,
               ),
             ),
           ),
-          onTap: () {
-            _changeScale();
-            _changeVisibility();
-          },
         ),
       ),
     );
