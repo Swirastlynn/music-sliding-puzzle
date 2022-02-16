@@ -12,21 +12,25 @@ class SoundAnimationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(
       () => AnimatedOpacity(
-        opacity: controller.visible,
+        opacity: controller.getVisibility,
         duration: const Duration(milliseconds: _duration),
         child: AnimatedScale(
-          scale: controller.scale,
+          scale: controller.getScale,
           duration: const Duration(milliseconds: _duration),
           child: Container(
             decoration: ShapeDecoration(
               shape: CircleBorder(
                 side: BorderSide(
-                  width: controller.scale,
+                  width: controller.getScale,
                   color: CustomColors.goldenRod,
                 ),
               ),
             ),
           ),
+          onEnd: () {
+            // todo reset state without animation.
+            controller.resetAnimation();
+          },
         ),
       ),
     );
@@ -35,17 +39,22 @@ class SoundAnimationWidget extends StatelessWidget {
 
 class SoundAnimationStateController extends GetxController {
   final _scale = 1.0.obs;
-  final _visible = 1.0.obs;
+  final _visibility = 1.0.obs;
 
-  double get scale => _scale.value;
+  double get getScale => _scale.value;
 
-  double get visible => _visible.value;
+  double get getVisibility => _visibility.value;
 
   void changeScale() {
     _scale.value = _scale.value == 1.0 ? 1.2 : 1.0;
   }
 
   void changeVisibility() {
-    _visible.value = _visible.value == 1.0 ? 0.0 : 1.0;
+    _visibility.value = _visibility.value == 1.0 ? 0.0 : 1.0;
+  }
+
+  void resetAnimation() {
+    _visibility.value = 1.0;
+    _scale.value = 1.0;
   }
 }
