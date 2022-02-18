@@ -136,36 +136,29 @@ class _MusicTile extends GetView<PuzzleController> {
             : tile.isCorrect()
                 ? CustomColors.goldenRod
                 : CustomColors.transparent,
-        child: InkResponse(
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              Ink(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Text(
-                        tile.name,
-                        style: Theme.of(context).textTheme.bodyText2,
-                      ),
-                    ),
-                    const Icon(
-                      Icons.audiotrack,
-                      color: CustomColors.gradientBottom,
-                      size: 20.0,
-                    ),
-                  ],
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Text(
+                    tile.name,
+                    style: Theme.of(context).textTheme.bodyText2,
+                  ),
                 ),
-              ),
-              const SoundAnimationWidget(),
-            ],
-          ),
-          onTap: () {
-            controller.tapTile(tile);
-          },
+                const Icon(
+                  Icons.audiotrack,
+                  color: CustomColors.gradientBottom,
+                  size: 20.0,
+                ),
+              ],
+            ),
+            const SoundAnimationWidget(),
+          ],
         ),
       ),
     );
