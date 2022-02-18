@@ -1,60 +1,58 @@
 import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
+import 'package:flutter/material.dart';
 import 'package:music_sliding_puzzle/common/theme/custom_colors.dart';
 
-class SoundAnimationWidget extends StatelessWidget {
-  const SoundAnimationWidget(this.controller, {Key? key}) : super(key: key);
-  static const int _duration = 300;
+class SoundAnimationWidget extends StatefulWidget {
+  const SoundAnimationWidget({Key? key}) : super(key: key);
 
-  final SoundAnimationStateController controller;
+  @override
+  State<SoundAnimationWidget> createState() => _SoundAnimationWidgetState();
+}
+
+class _SoundAnimationWidgetState extends State<SoundAnimationWidget> with TickerProviderStateMixin {
+  static const int _duration = 300;
+  late final AnimationController _soundAnimationController;
+  late final Animation<double> _scaleAnimation;
+  late final Animation<double> _opacityAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _soundAnimationController = AnimationController(
+      duration: const Duration(milliseconds: _duration),
+      vsync: this,
+    );
+    _scaleAnimation = Tween(begin: 1.0, end: 1.3).animate(_soundAnimationController);
+    _opacityAnimation = Tween(begin: 1.0, end: 0.0).animate(_soundAnimationController);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => AnimatedOpacity(
-        opacity: controller.getVisibility,
-        duration: const Duration(milliseconds: _duration),
-        child: AnimatedScale(
-          scale: controller.getScale,
-          duration: const Duration(milliseconds: _duration),
+    return GestureDetector(
+      onTap: () {
+        _soundAnimationController.forward(from: 0.0);
+      },
+      child: FadeTransition(
+        opacity: _opacityAnimation,
+        child: ScaleTransition(
+          scale: _scaleAnimation,
           child: Container(
-            decoration: ShapeDecoration(
+            decoration: const ShapeDecoration(
               shape: CircleBorder(
                 side: BorderSide(
-                  width: controller.getScale,
+                  width: 1,
                   color: CustomColors.goldenRod,
                 ),
               ),
             ),
           ),
-          onEnd: () {
-            // todo reset state without animation.
-            controller.resetAnimation();
-          },
         ),
       ),
     );
   }
-}
 
-class SoundAnimationStateController extends GetxController {
-  final _scale = 1.0.obs;
-  final _visibility = 1.0.obs;
-
-  double get getScale => _scale.value;
-
-  double get getVisibility => _visibility.value;
-
-  void changeScale() {
-    _scale.value = _scale.value == 1.0 ? 1.2 : 1.0;
-  }
-
-  void changeVisibility() {
-    _visibility.value = _visibility.value == 1.0 ? 0.0 : 1.0;
-  }
-
-  void resetAnimation() {
-    _visibility.value = 1.0;
-    _scale.value = 1.0;
+  @override
+  void dispose() {
+    _soundAnimationController.dispose();
   }
 }

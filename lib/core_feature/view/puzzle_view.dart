@@ -93,11 +93,7 @@ class _Tile extends StatelessWidget {
         : _MusicTile(
             key: Key('simple_tile_${tile.value}'),
             tile: tile,
-            // todo Dependency Injection?
-            soundAnimationStateController: Get.put(
-              SoundAnimationStateController(),
-              tag: tile.value.toString(),
-            ));
+          );
   }
 }
 
@@ -113,11 +109,9 @@ class _WhitespaceTile extends StatelessWidget {
 }
 
 class _MusicTile extends GetView<PuzzleController> {
-  const _MusicTile({Key? key, required this.tile, required this.soundAnimationStateController})
-      : super(key: key);
+  const _MusicTile({Key? key, required this.tile}) : super(key: key);
 
   final Tile tile;
-  final SoundAnimationStateController soundAnimationStateController;
 
   @override
   Widget build(BuildContext context) {
@@ -166,13 +160,11 @@ class _MusicTile extends GetView<PuzzleController> {
                   ],
                 ),
               ),
-              SoundAnimationWidget(soundAnimationStateController),
+              const SoundAnimationWidget(),
             ],
           ),
           onTap: () {
             controller.tapTile(tile);
-            soundAnimationStateController.changeScale();
-            soundAnimationStateController.changeVisibility();
           },
         ),
       ),
