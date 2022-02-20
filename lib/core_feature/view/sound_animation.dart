@@ -22,8 +22,18 @@ class _SoundAnimationWidgetState extends State<SoundAnimationWidget> with Ticker
       duration: const Duration(milliseconds: _duration),
       vsync: this,
     );
-    _scaleAnimation = Tween(begin: 1.0, end: 1.3).animate(_soundAnimationController);
-    _opacityAnimation = Tween(begin: 1.0, end: 0.0).animate(_soundAnimationController);
+    _scaleAnimation = Tween(begin: 1.0, end: 1.25).animate(
+        CurvedAnimation(
+          parent: _soundAnimationController,
+          curve: Curves.fastOutSlowIn,
+        ),
+    );
+    _opacityAnimation = Tween(begin: 1.0, end: 0.0).animate(
+        CurvedAnimation(
+          parent: _soundAnimationController,
+          curve: Curves.fastOutSlowIn,
+        ),
+    );
   }
 
   @override
