@@ -1,4 +1,3 @@
-import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_sliding_puzzle/common/theme/custom_colors.dart';
@@ -8,14 +7,9 @@ import 'package:music_sliding_puzzle/core_feature/presentation/puzzle_controller
 
 import 'sound_animation.dart';
 
-class PuzzleView extends StatefulWidget {
-  const PuzzleView({Key? key}) : super(key: key);
+class PuzzleView extends StatelessWidget {
+  PuzzleView({Key? key}) : super(key: key);
 
-  @override
-  State<PuzzleView> createState() => _PuzzleViewState();
-}
-
-class _PuzzleViewState extends State<PuzzleView> with AfterLayoutMixin<PuzzleView> {
   final PuzzleController controller = Get.find();
 
   @override
@@ -25,18 +19,25 @@ class _PuzzleViewState extends State<PuzzleView> with AfterLayoutMixin<PuzzleVie
       child: Column(
         children: [
           Container(
-              padding: const EdgeInsets.all(24),
-              child: Obx(() => Text("Moves: ${controller.movesCounter.toString()}"))),
+            padding: const EdgeInsets.all(24),
+            child: Obx(
+              () => Text("Moves: ${controller.movesCounter.toString()}"),
+            ),
+          ),
           Container(
             padding: const EdgeInsets.only(top: 144),
-            child: Obx(() => _Board(puzzle: controller.puzzle)),
+            child: Obx(
+              () => _Board(puzzle: controller.puzzle),
+            ),
           ),
           Container(
             padding: const EdgeInsets.all(24),
-            child: ElevatedButton(
-              onPressed: () {},
+            child: OutlinedButton(
+              onPressed: () {
+                controller.playMelody();
+              },
               child: Text(
-                "LISTEN",
+                "LISTEN TUTORIAL",
                 style: Theme.of(context).textTheme.headline3,
               ),
             ),
@@ -44,11 +45,6 @@ class _PuzzleViewState extends State<PuzzleView> with AfterLayoutMixin<PuzzleVie
         ],
       ),
     );
-  }
-
-  @override
-  void afterFirstLayout(BuildContext context) {
-    controller.playMelody();
   }
 }
 

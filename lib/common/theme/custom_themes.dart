@@ -15,6 +15,17 @@ class CustomThemes {
         bodyText1: CustomTextStyles.bodyLargeBold,
         bodyText2: CustomTextStyles.body,
       ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: TextButton.styleFrom(
+          primary: CustomColors.primary,
+          backgroundColor: CustomColors.indigoContrast,
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          primary: CustomColors.indigoContrast,
+        ),
+      ),
     );
   }
 }

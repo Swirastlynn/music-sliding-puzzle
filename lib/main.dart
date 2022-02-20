@@ -85,7 +85,7 @@ class MyHomePage extends StatelessWidget {
                 ],
               ),
             ),
-            child: const PuzzleView()),
+            child: PuzzleView()),
       ),
     );
   }
