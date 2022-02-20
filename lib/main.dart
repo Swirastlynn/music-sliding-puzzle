@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Sounds Slider',
       theme: CustomThemes.darkTheme,
-      home: const MyHomePage(title: 'Sounds Slider'),
+      home: const PuzzleScreen(title: 'Sounds Slider'),
       initialBinding: AppBinding(),
     );
   }
@@ -63,8 +63,8 @@ class AppBinding implements Bindings {
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class PuzzleScreen extends StatelessWidget {
+  const PuzzleScreen({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
