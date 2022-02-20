@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:music_sliding_puzzle/common/theme/custom_colors.dart';
 
 class SoundAnimationWidget extends StatefulWidget {
-  const SoundAnimationWidget({Key? key}) : super(key: key);
+  const SoundAnimationWidget({this.onTap, Key? key}) : super(key: key);
+
+  final onTap;
 
   @override
   State<SoundAnimationWidget> createState() => _SoundAnimationWidgetState();
@@ -41,6 +43,7 @@ class _SoundAnimationWidgetState extends State<SoundAnimationWidget> with Ticker
     return GestureDetector(
       onTap: () {
         _soundAnimationController.forward(from: 0.0);
+        widget.onTap();
       },
       child: FadeTransition(
         opacity: _opacityAnimation,

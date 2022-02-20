@@ -37,7 +37,7 @@ class PuzzleView extends StatelessWidget {
                 controller.playMelody();
               },
               child: Text(
-                "LISTEN TUTORIAL",
+                "SHOW TUTORIAL",
                 style: Theme.of(context).textTheme.headline3,
               ),
             ),
@@ -163,7 +163,9 @@ class _MusicTile extends GetView<PuzzleController> {
                 ),
               ],
             ),
-            const SoundAnimationWidget(),
+            SoundAnimationWidget(
+                    onTap: () { controller.tapTile(tile); }
+            ),
           ],
         ),
       ),
