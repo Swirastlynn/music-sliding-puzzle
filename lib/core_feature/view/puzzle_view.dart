@@ -128,8 +128,8 @@ class _MusicTile extends GetView<PuzzleController> {
             width: 1,
             color: controller.isTutorial
                 ? (tile.value == controller.tutorialPlayingTileNumber)
-                    ? CustomColors.correctTutorialTileBorder
-                    : CustomColors.incorrectTutorialTileBorder
+                    ? CustomColors.playingTutorialTileBorder
+                    : CustomColors.tutorialTileBorder
                 : tile.isCorrect()
                     ? CustomColors.correctTileBorder
                     : CustomColors.incorrectTileBorder,

@@ -25,6 +25,7 @@ abstract class CustomColors {
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
   static const Color transparent = Color(0x00000000);
+  static const Color gray = Color(0xFF999999);
 
 
 /// features
@@ -39,8 +40,8 @@ abstract class CustomColors {
   static const Color tutorialTileBg = transparent;
   static const Color playingTileBg = goldenRod;
   static const Color tileBg = transparent;
-  static const Color correctTutorialTileBorder = indigo;
-  static const Color incorrectTutorialTileBorder = goldenRod;
+  static const Color playingTutorialTileBorder = indigo;
+  static const Color tutorialTileBorder = gray;
   static const Color correctTileBorder = indigo;
   static const Color incorrectTileBorder = goldenRod;
 
