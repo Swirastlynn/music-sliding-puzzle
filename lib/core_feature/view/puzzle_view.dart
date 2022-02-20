@@ -34,7 +34,7 @@ class PuzzleView extends StatelessWidget {
             padding: const EdgeInsets.all(24),
             child: OutlinedButton(
               onPressed: () {
-                controller.playMelody();
+                controller.playTutorialMelody();
               },
               child: Text(
                 "SHOW TUTORIAL",
@@ -164,7 +164,9 @@ class _MusicTile extends GetView<PuzzleController> {
               ],
             ),
             SoundAnimationWidget(
-                    onTap: () { controller.tapTile(tile); }
+                    onTap: () {
+                      controller.tapTile(tile);
+                    }
             ),
           ],
         ),

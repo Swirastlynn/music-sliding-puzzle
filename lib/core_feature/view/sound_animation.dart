@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:music_sliding_puzzle/common/theme/custom_colors.dart';
 
-class SoundAnimationWidget extends StatefulWidget {
-  const SoundAnimationWidget({this.onTap, Key? key}) : super(key: key);
+import '../presentation/puzzle_controller.dart';
 
-  final onTap;
+class SoundAnimationWidget extends StatefulWidget {
+  const SoundAnimationWidget({required this.onTap, Key? key}) : super(key: key);
+
+  final void Function() onTap;
 
   @override
   State<SoundAnimationWidget> createState() => _SoundAnimationWidgetState();
@@ -16,6 +19,8 @@ class _SoundAnimationWidgetState extends State<SoundAnimationWidget> with Ticker
   late final AnimationController _soundAnimationController;
   late final Animation<double> _scaleAnimation;
   late final Animation<double> _opacityAnimation;
+
+  final PuzzleController controller = Get.find();
 
   @override
   void initState() {
@@ -42,8 +47,10 @@ class _SoundAnimationWidgetState extends State<SoundAnimationWidget> with Ticker
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        _soundAnimationController.forward(from: 0.0);
-        widget.onTap();
+        if (!controller.isTutorial) {
+          _soundAnimationController.forward(from: 0.0);
+          widget.onTap();
+        }
       },
       child: FadeTransition(
         opacity: _opacityAnimation,

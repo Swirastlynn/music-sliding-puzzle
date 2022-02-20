@@ -26,9 +26,11 @@ class PuzzleController extends GetxController {
   late Rx<PuzzleState> puzzleState;
 
   get isTutorial => tutorialState.value.isTutorial;
+
   get tutorialPlayingTileNumber => tutorialState.value.tutorialPlayingTileNumber;
 
   get puzzle => puzzleState.value.puzzle;
+
   get movesCounter => puzzleState.value.movesCounter;
 
   @override
@@ -112,19 +114,21 @@ class PuzzleController extends GetxController {
     ];
   }
 
-  void playMelody() {
-    soundLibrary.playSoundsOneByOne(
-      onSoundStart: (soundIndex) {
-        tutorialState.update((state) {
-          state?.tutorialPlayingTileNumber = soundIndex + 1;
-        });
-      },
-      onMelodyComplete: () {
-        tutorialState.update((state) {
-          state?.tutorialPlayingTileNumber = -1;
-        });
-      },
-    );
+  void playTutorialMelody() {
+    if (!isTutorial) {
+      soundLibrary.playSoundsOneByOne(
+        onSoundStart: (soundIndex) {
+          tutorialState.update((state) {
+            state?.tutorialPlayingTileNumber = soundIndex + 1;
+          });
+        },
+        onMelodyComplete: () {
+          tutorialState.update((state) {
+            state?.tutorialPlayingTileNumber = -1;
+          });
+        },
+      );
+    }
   }
 
   // todo there are different possible results: complete/incomplete=>isMovable=>move=>complete/incomplete, also isNotMovable
