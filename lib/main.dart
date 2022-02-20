@@ -16,8 +16,8 @@ import 'level.dart';
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
-      statusBarColor: CustomColors.richBlack,
-      systemNavigationBarColor: Colors.transparent,
+      statusBarColor: CustomColors.statusBar,
+      systemNavigationBarColor: CustomColors.systemNavigationBar,
     ),
   );
   runApp(const MyApp());
@@ -80,7 +80,7 @@ class MyHomePage extends StatelessWidget {
                 end: Alignment.bottomLeft,
                 stops: [0.1, 1],
                 colors: [
-                  CustomColors.gradientMiddle,
+                  CustomColors.gradientBottom,
                   CustomColors.gradientTop,
                 ],
               ),

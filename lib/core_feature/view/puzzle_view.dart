@@ -31,6 +31,16 @@ class _PuzzleViewState extends State<PuzzleView> with AfterLayoutMixin<PuzzleVie
             padding: const EdgeInsets.only(top: 144),
             child: Obx(() => _Board(puzzle: controller.puzzle)),
           ),
+          Container(
+            padding: const EdgeInsets.all(24),
+            child: ElevatedButton(
+              onPressed: () {},
+              child: Text(
+                "LISTEN",
+                style: Theme.of(context).textTheme.headline3,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -122,20 +132,20 @@ class _MusicTile extends GetView<PuzzleController> {
             width: 1,
             color: controller.isTutorial
                 ? (tile.value == controller.tutorialPlayingTileNumber)
-                    ? CustomColors.indigo
-                    : CustomColors.goldenRod
+                    ? CustomColors.correctTutorialTileBorder
+                    : CustomColors.incorrectTutorialTileBorder
                 : tile.isCorrect()
-                    ? CustomColors.indigo
-                    : CustomColors.goldenRod,
+                    ? CustomColors.correctTileBorder
+                    : CustomColors.incorrectTileBorder,
           ),
         ),
         color: controller.isTutorial
             ? (tile.value == controller.tutorialPlayingTileNumber)
-                ? CustomColors.goldenRod
-                : CustomColors.transparent
+                ? CustomColors.playingTutorialTileBg
+                : CustomColors.tutorialTileBg
             : tile.isCorrect()
-                ? CustomColors.goldenRod
-                : CustomColors.transparent,
+                ? CustomColors.playingTileBg
+                : CustomColors.tileBg,
         child: Stack(
           fit: StackFit.expand,
           children: [
@@ -152,7 +162,7 @@ class _MusicTile extends GetView<PuzzleController> {
                 ),
                 const Icon(
                   Icons.audiotrack,
-                  color: CustomColors.gradientBottom,
+                  color: CustomColors.noteIcon,
                   size: 20.0,
                 ),
               ],

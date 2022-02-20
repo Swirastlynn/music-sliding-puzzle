@@ -51,7 +51,7 @@ class _SoundAnimationWidgetState extends State<SoundAnimationWidget> with Ticker
               shape: CircleBorder(
                 side: BorderSide(
                   width: 1,
-                  color: CustomColors.goldenRod,
+                  color: CustomColors.soundAnimation,
                 ),
               ),
             ),
