@@ -143,9 +143,11 @@ class PuzzleController extends GetxController {
       } else {
         puzzleState.update((state) {
           state?.puzzle = movedPuzzle.sort();
-          state?.movesCounter = state.movesCounter;
         });
       }
+      puzzleState.update((state) {
+        state?.movesCounter += 1;
+      });
     } else {
       debugPrint("TEST Tile is not movable");
       // todo

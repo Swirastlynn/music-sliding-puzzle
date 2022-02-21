@@ -15,7 +15,7 @@ class SoundAnimationWidget extends StatefulWidget {
 }
 
 class _SoundAnimationWidgetState extends State<SoundAnimationWidget> with TickerProviderStateMixin {
-  static const int _duration = 300;
+  static const int _duration = 500;
   late final AnimationController _soundAnimationController;
   late final Animation<double> _scaleAnimation;
   late final Animation<double> _opacityAnimation;
@@ -29,7 +29,7 @@ class _SoundAnimationWidgetState extends State<SoundAnimationWidget> with Ticker
       duration: const Duration(milliseconds: _duration),
       vsync: this,
     );
-    _scaleAnimation = Tween(begin: 1.0, end: 1.25).animate(
+    _scaleAnimation = Tween(begin: 1.0, end: 1.4).animate(
         CurvedAnimation(
           parent: _soundAnimationController,
           curve: Curves.fastOutSlowIn,

@@ -21,7 +21,10 @@ class PuzzleView extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(24),
             child: Obx(
-              () => Text("Moves: ${controller.movesCounter.toString()}"),
+              () => Text(
+                "Moves: ${controller.movesCounter.toString()}",
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
             ),
           ),
           Container(
@@ -163,11 +166,9 @@ class _MusicTile extends GetView<PuzzleController> {
                 ),
               ],
             ),
-            SoundAnimationWidget(
-                    onTap: () {
-                      controller.tapTile(tile);
-                    }
-            ),
+            SoundAnimationWidget(onTap: () {
+              controller.tapTile(tile);
+            }),
           ],
         ),
       ),
