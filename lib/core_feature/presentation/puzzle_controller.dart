@@ -33,10 +33,12 @@ class PuzzleController extends GetxController {
 
   get movesCounter => puzzleState.value.movesCounter;
 
+  get playedNotesCounter => puzzleState.value.playedNotesCounter;
+
   @override
   void onInit() {
     tutorialState = TutorialState(tutorialPlayingTileNumber: -1).obs;
-    puzzleState = PuzzleState(puzzle: _generatePuzzle().sort(), movesCounter: 0).obs;
+    puzzleState = PuzzleState(puzzle: _generatePuzzle().sort(), movesCounter: 0, playedNotesCounter: 0).obs;
     debugPrint("TEST PuzzleController onInit puzzle generated");
     super.onInit();
   }
@@ -133,6 +135,9 @@ class PuzzleController extends GetxController {
 
   void playTileSound(Tile tappedTile) {
     soundLibrary.playSound(tappedTile);
+    puzzleState.update((state) {
+      state?.playedNotesCounter += 1;
+    });
   }
 
   // todo there are different possible results: complete/incomplete=>isMovable=>move=>complete/incomplete, also isNotMovable

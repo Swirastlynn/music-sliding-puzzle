@@ -19,10 +19,19 @@ class PuzzleView extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.only(top: 64, bottom: 16),
+            padding: const EdgeInsets.only(top: 64),
             child: Obx(
               () => Text(
                 "Moves: ${controller.movesCounter.toString()}",
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.only(top: 8, bottom: 16),
+            child: Obx(
+                  () => Text(
+                "Played notes: ${controller.playedNotesCounter.toString()}",
                 style: Theme.of(context).textTheme.bodyText1,
               ),
             ),
@@ -58,14 +67,20 @@ class PuzzleView extends StatelessWidget {
             ),
           ),
           Container(
-            padding: const EdgeInsets.only(top: 64),
-            child: OutlinedButton(
-              onPressed: () {
-                controller.playTutorialMelody();
-              },
-              child: Text(
-                "Play expected melody",
-                style: Theme.of(context).textTheme.headline3,
+            padding: const EdgeInsets.all(32),
+            child: SizedBox(
+              width: double.infinity,
+              child: OutlinedButton(
+                onPressed: () {
+                  controller.playTutorialMelody();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Text(
+                    "Play expected melody",
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                ),
               ),
             ),
           ),
