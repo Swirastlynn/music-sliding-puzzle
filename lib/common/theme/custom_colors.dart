@@ -35,8 +35,9 @@ abstract class CustomColors {
   static const Color statusBar = _richBlack;
   static const Color systemNavigationBar = _transparent;
 
-  static const Color gradientTop = _atoll;
-  static const Color gradientBottom = _tarawera;
+  static const Color gradientTop = _richBlack;
+  static const Color gradientMiddle = _tarawera;
+  static const Color gradientBottom = _atoll;
 
   static const Color playingTutorialTileBg = _goldenRod;
   static const Color tutorialTileBg = _transparent;

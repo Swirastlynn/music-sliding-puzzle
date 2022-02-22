@@ -74,12 +74,13 @@ class PuzzleScreen extends StatelessWidget {
           // color: CustomColors.grayDark,
             decoration: const BoxDecoration(
               gradient: LinearGradient(
-                begin: Alignment.topRight,
+                begin: Alignment.topCenter,
                 end: Alignment.bottomLeft,
-                stops: [0.1, 1],
+                stops: [0, 0.28, 1],
                 colors: [
-                  CustomColors.gradientBottom,
                   CustomColors.gradientTop,
+                  CustomColors.gradientMiddle,
+                  CustomColors.gradientBottom,
                 ],
               ),
             ),
