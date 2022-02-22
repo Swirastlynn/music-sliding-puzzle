@@ -6,9 +6,10 @@ import 'package:music_sliding_puzzle/common/theme/custom_colors.dart';
 import '../presentation/puzzle_controller.dart';
 
 class SoundAnimationWidget extends StatefulWidget {
-  const SoundAnimationWidget({required this.onTap, Key? key}) : super(key: key);
+  const SoundAnimationWidget({required this.onTap, Key? key, required this.onDoubleTap}) : super(key: key);
 
   final void Function() onTap;
+  final void Function() onDoubleTap;
 
   @override
   State<SoundAnimationWidget> createState() => _SoundAnimationWidgetState();
@@ -30,16 +31,16 @@ class _SoundAnimationWidgetState extends State<SoundAnimationWidget> with Ticker
       vsync: this,
     );
     _scaleAnimation = Tween(begin: 1.0, end: 1.4).animate(
-        CurvedAnimation(
-          parent: _soundAnimationController,
-          curve: Curves.fastOutSlowIn,
-        ),
+      CurvedAnimation(
+        parent: _soundAnimationController,
+        curve: Curves.fastOutSlowIn,
+      ),
     );
     _opacityAnimation = Tween(begin: 1.0, end: 0.0).animate(
-        CurvedAnimation(
-          parent: _soundAnimationController,
-          curve: Curves.fastOutSlowIn,
-        ),
+      CurvedAnimation(
+        parent: _soundAnimationController,
+        curve: Curves.fastOutSlowIn,
+      ),
     );
   }
 
@@ -48,8 +49,13 @@ class _SoundAnimationWidgetState extends State<SoundAnimationWidget> with Ticker
     return GestureDetector(
       onTap: () {
         if (!controller.isTutorial) {
-          _soundAnimationController.forward(from: 0.0);
           widget.onTap();
+        }
+      },
+      onDoubleTap: () {
+        if (!controller.isTutorial) {
+          _soundAnimationController.forward(from: 0.0);
+          widget.onDoubleTap();
         }
       },
       child: FadeTransition(

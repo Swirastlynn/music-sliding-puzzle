@@ -19,7 +19,7 @@ class PuzzleView extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.only(top: 48),
             child: Obx(
               () => Text(
                 "Moves: ${controller.movesCounter.toString()}",
@@ -54,7 +54,7 @@ class PuzzleView extends StatelessWidget {
 class _Board extends StatelessWidget {
   const _Board({Key? key, required this.puzzle}) : super(key: key);
 
-  final Puzzle puzzle;
+  final Puzzle puzzle; // todo not through controller?
 
   @override
   Widget build(BuildContext context) {
@@ -166,9 +166,14 @@ class _MusicTile extends GetView<PuzzleController> {
                 ),
               ],
             ),
-            SoundAnimationWidget(onTap: () {
-              controller.tapTile(tile);
-            }),
+            SoundAnimationWidget(
+              onTap: () {
+                controller.moveTile(tile);
+              },
+              onDoubleTap: () {
+                controller.playTileSound(tile);
+              },
+            ),
           ],
         ),
       ),

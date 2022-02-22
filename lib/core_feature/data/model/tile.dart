@@ -30,8 +30,6 @@ class Tile extends Equatable {
 
   bool isCorrect() => correctPosition == currentPosition;
 
-  bool isAlreadyPlayed() => correctPosition == currentPosition;
-
   /// Create a copy of this [Tile] with updated current position.
   Tile copyWith({required Position currentPosition}) {
     return Tile(

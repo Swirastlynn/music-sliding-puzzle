@@ -131,10 +131,12 @@ class PuzzleController extends GetxController {
     }
   }
 
-  // todo there are different possible results: complete/incomplete=>isMovable=>move=>complete/incomplete, also isNotMovable
-  void tapTile(Tile tappedTile) {
+  void playTileSound(Tile tappedTile) {
     soundLibrary.playSound(tappedTile);
+  }
 
+  // todo there are different possible results: complete/incomplete=>isMovable=>move=>complete/incomplete, also isNotMovable
+  void moveTile(Tile tappedTile) {
     if (puzzleState.value.puzzle.isTileMovable(tappedTile)) {
       final mutablePuzzle = Puzzle(tiles: [...puzzleState.value.puzzle.tiles]);
       final movedPuzzle = mutablePuzzle.moveTiles(tappedTile, []);

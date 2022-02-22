@@ -20,18 +20,18 @@ void main() {
       systemNavigationBarColor: CustomColors.systemNavigationBar,
     ),
   );
-  runApp(const MyApp());
+  runApp(const SoundingPuzzleApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class SoundingPuzzleApp extends StatelessWidget {
+  const SoundingPuzzleApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Sounds Slider',
+      title: 'Sounding Puzzle',
       theme: CustomThemes.darkTheme,
-      home: const PuzzleScreen(title: 'Sounds Slider'),
+      home: const PuzzleScreen(),
       initialBinding: AppBinding(),
     );
   }
@@ -64,9 +64,7 @@ class AppBinding implements Bindings {
 }
 
 class PuzzleScreen extends StatelessWidget {
-  const PuzzleScreen({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  const PuzzleScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

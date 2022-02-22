@@ -18,12 +18,12 @@ class CustomThemes {
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: TextButton.styleFrom(
           primary: CustomColors.primary,
-          backgroundColor: CustomColors.indigoContrast,
+          backgroundColor: CustomColors.elevatedButtonBg,
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          primary: CustomColors.indigoContrast,
+          primary: CustomColors.outlineButton,
         ),
       ),
     );
