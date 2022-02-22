@@ -49,7 +49,8 @@ abstract class CustomColors {
   static const Color incorrectTileBorder = _goldenRod;
 
   static const Color soundAnimation = _goldenRod;
-  static const Color noteIcon = _cornflowerBlue;
+  static const Color noteIconOnLightBg = _cornflowerBlue;
+  static const Color noteIconOnDarkBg = _atoll;
 
 
 }

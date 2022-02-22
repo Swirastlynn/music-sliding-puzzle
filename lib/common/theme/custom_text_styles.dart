@@ -54,7 +54,7 @@ class CustomTextStyles {
 
   static TextStyle get bodyLarge {
     return _baseTextStyle.copyWith(
-      fontSize: 16,
+      fontSize: 18,
       height: 1.5,
       fontWeight: CustomFontWeight.regular,
     );
@@ -62,8 +62,8 @@ class CustomTextStyles {
 
   static TextStyle get body {
     return _bodyTextStyle.copyWith(
-      fontSize: 14,
-      height: 1.58,
+      fontSize: 16,
+      height: 1.5,
       fontWeight: CustomFontWeight.regular,
     );
   }

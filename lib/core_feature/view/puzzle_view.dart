@@ -19,7 +19,7 @@ class PuzzleView extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.only(top: 48),
+            padding: const EdgeInsets.only(top: 64, bottom: 16),
             child: Obx(
               () => Text(
                 "Moves: ${controller.movesCounter.toString()}",
@@ -28,19 +28,43 @@ class PuzzleView extends StatelessWidget {
             ),
           ),
           Container(
-            padding: const EdgeInsets.only(top: 144),
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(6),
+                  child: Text(
+                    "Double tap to listen",
+                    style: Theme.of(context).textTheme.bodyText2,
+                  ),
+                ),
+                const Icon(
+                  Icons.audiotrack,
+                  color: CustomColors.noteIconOnDarkBg,
+                  size: 20.0,
+                ),
+              ],
+            ),
+          ),
+          Text(
+            "Single tap to move a tile",
+            style: Theme.of(context).textTheme.bodyText2,
+          ),
+          Container(
+            padding: const EdgeInsets.only(top: 96),
             child: Obx(
               () => _Board(puzzle: controller.puzzle),
             ),
           ),
           Container(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.only(top: 64),
             child: OutlinedButton(
               onPressed: () {
                 controller.playTutorialMelody();
               },
               child: Text(
-                "SHOW TUTORIAL",
+                "Play expected melody",
                 style: Theme.of(context).textTheme.headline3,
               ),
             ),
@@ -161,7 +185,7 @@ class _MusicTile extends GetView<PuzzleController> {
                 ),
                 const Icon(
                   Icons.audiotrack,
-                  color: CustomColors.noteIcon,
+                  color: CustomColors.noteIconOnLightBg,
                   size: 20.0,
                 ),
               ],
