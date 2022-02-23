@@ -163,4 +163,12 @@ class PuzzleController extends GetxController {
   bool isTileMovable(Tile tile) {
     return puzzleState.value.puzzle.isTileMovable(tile);
   }
+
+  void goToPreviousLevel() {
+
+  }
+
+  void goToNextLevel() {
+
+  }
 }

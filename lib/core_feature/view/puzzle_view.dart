@@ -20,7 +20,7 @@ class PuzzleView extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.only(top: 64),
+            padding: const EdgeInsets.only(top: 48),
             child: Obx(
               () => Text(
                 "Moves: ${controller.movesCounter.toString()}",
@@ -61,17 +61,70 @@ class PuzzleView extends StatelessWidget {
             "Single tap to move a tile",
             style: Theme.of(context).textTheme.bodyText2,
           ),
+          Padding(
+            padding: const EdgeInsets.only(top: 16, bottom: 16, right: 12, left: 12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    shape: const StadiumBorder(),
+                    side: const BorderSide(width: 1, color: CustomColors.expectedMelodyButton),
+                  ),
+                  onPressed: () {
+                    controller.goToPreviousLevel();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Text(
+                      "<-",
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
+                  ),
+                ),
+                const Spacer(),
+                Text(
+                  "Level",
+                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                        color: CustomColors.levelButton,
+                      ),
+                ),
+                const Spacer(),
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    shape: const StadiumBorder(),
+                    side: const BorderSide(width: 1, color: CustomColors.expectedMelodyButton),
+                  ),
+                  onPressed: () {
+                    controller.goToNextLevel();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Text(
+                      "->",
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
           Container(
-            padding: const EdgeInsets.only(top: 96),
+            padding: const EdgeInsets.only(top: 8),
             child: Obx(
               () => _Board(puzzle: controller.puzzle),
             ),
           ),
+          const Spacer(),
           Container(
-            padding: const EdgeInsets.all(32),
+            padding: const EdgeInsets.all(24),
             child: SizedBox(
               width: double.infinity,
               child: OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  shape: const StadiumBorder(),
+                  side: const BorderSide(width: 1, color: CustomColors.expectedMelodyButton),
+                ),
                 onPressed: () {
                   controller.playTutorialMelody();
                 },

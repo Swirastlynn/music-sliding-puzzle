@@ -51,6 +51,9 @@ abstract class CustomColors {
   static const Color soundAnimation = _goldenRod;
   static const Color noteIconOnLightBg = _cornflowerBlue;
   static const Color noteIconOnDarkBg = _atoll;
+  static const Color levelButton = _goldenRod;
+
+  static const Color expectedMelodyButton = _goldenRod;
 
 
 }
