@@ -5,19 +5,18 @@ import 'package:music_sliding_puzzle/common/theme/custom_colors.dart';
 
 import '../presentation/puzzle_controller.dart';
 
-class SoundAnimationWidget extends StatefulWidget {
-  // todo rename do WaveAnimationWidget
-  const SoundAnimationWidget({required this.onTap, Key? key, required this.onDoubleTap})
+class WaveAnimationWidget extends StatefulWidget { // todo child inside?
+  const WaveAnimationWidget({required this.onTap, Key? key, required this.onDoubleTap})
       : super(key: key);
 
   final void Function() onTap;
   final void Function() onDoubleTap;
 
   @override
-  State<SoundAnimationWidget> createState() => _SoundAnimationWidgetState();
+  State<WaveAnimationWidget> createState() => _WaveAnimationWidgetState();
 }
 
-class _SoundAnimationWidgetState extends State<SoundAnimationWidget> with TickerProviderStateMixin {
+class _WaveAnimationWidgetState extends State<WaveAnimationWidget> with TickerProviderStateMixin {
   static const int _duration = 620;
   static const int _duration2 = 760;
   static const int _duration3 = 880;

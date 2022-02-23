@@ -31,6 +31,10 @@ class PuzzleController extends GetxController {
 
   get puzzle => puzzleState.value.puzzle;
 
+  get puzzleDimension => puzzleState.value.puzzle.getDimension();
+
+  get puzzleTiles => puzzleState.value.puzzle.tiles;
+
   get movesCounter => puzzleState.value.movesCounter;
 
   get playedNotesCounter => puzzleState.value.playedNotesCounter;
@@ -38,7 +42,8 @@ class PuzzleController extends GetxController {
   @override
   void onInit() {
     tutorialState = TutorialState(tutorialPlayingTileNumber: -1).obs;
-    puzzleState = PuzzleState(puzzle: _generatePuzzle().sort(), movesCounter: 0, playedNotesCounter: 0).obs;
+    puzzleState =
+        PuzzleState(puzzle: _generatePuzzle().sort(), movesCounter: 0, playedNotesCounter: 0).obs;
     debugPrint("TEST PuzzleController onInit puzzle generated");
     super.onInit();
   }
@@ -140,25 +145,19 @@ class PuzzleController extends GetxController {
     });
   }
 
-  // todo there are different possible results: complete/incomplete=>isMovable=>move=>complete/incomplete, also isNotMovable
   void moveTile(Tile tappedTile) {
-    if (puzzleState.value.puzzle.isTileMovable(tappedTile)) {
-      final mutablePuzzle = Puzzle(tiles: [...puzzleState.value.puzzle.tiles]);
-      final movedPuzzle = mutablePuzzle.moveTiles(tappedTile, []);
-      if (movedPuzzle.isComplete()) {
-        // todo
-      } else {
-        puzzleState.update((state) {
-          state?.puzzle = movedPuzzle.sort();
-        });
-      }
-      puzzleState.update((state) {
-        state?.movesCounter += 1;
-      });
-    } else {
-      debugPrint("TEST Tile is not movable");
+    final mutablePuzzle = Puzzle(tiles: [...puzzleState.value.puzzle.tiles]);
+    final movedPuzzle = mutablePuzzle.moveTiles(tappedTile, []);
+    if (movedPuzzle.isComplete()) {
       // todo
+    } else {
+      puzzleState.update((state) {
+        state?.puzzle = movedPuzzle.sort();
+      });
     }
+    puzzleState.update((state) {
+      state?.movesCounter += 1;
+    });
   }
 
   bool isTileMovable(Tile tile) {

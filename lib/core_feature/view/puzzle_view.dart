@@ -6,7 +6,7 @@ import 'package:music_sliding_puzzle/core_feature/data/model/tile.dart';
 import 'package:music_sliding_puzzle/core_feature/presentation/puzzle_controller.dart';
 
 import 'shake_animation.dart';
-import 'sound_animation.dart';
+import 'wave_animation.dart';
 
 class PuzzleView extends StatelessWidget {
   PuzzleView({Key? key}) : super(key: key);
@@ -102,10 +102,6 @@ class _Board extends StatelessWidget {
     if (size == 0) return const CircularProgressIndicator();
     return Container(
       padding: const EdgeInsets.all(8),
-      // decoration: BoxDecoration(
-      //   borderRadius: BorderRadius.circular(12),
-      //   border: Border.all(color: CustomColors.goldenRodTransparent, width: 1.5),
-      // ),
       child: GridView.count(
         padding: EdgeInsets.zero,
         shrinkWrap: true,
@@ -211,12 +207,13 @@ class _MusicTile extends GetView<PuzzleController> {
                 ],
               ),
             ),
-            SoundAnimationWidget(
+            WaveAnimationWidget(
               onTap: () {
-                if (!controller.isTileMovable(tile)) { // todo cleaner
+                if (controller.isTileMovable(tile)) {
+                  controller.moveTile(tile);
+                } else {
                   shakeWidgetKey.currentState?.shake();
                 }
-                controller.moveTile(tile);
               },
               onDoubleTap: () {
                 controller.playTileSound(tile);
