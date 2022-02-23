@@ -29,6 +29,8 @@ class PuzzleController extends GetxController {
 
   get tutorialPlayingTileNumber => tutorialState.value.tutorialPlayingTileNumber;
 
+  get isComplete => puzzleState.value.isComplete;
+
   get puzzle => puzzleState.value.puzzle;
 
   get puzzleDimension => puzzleState.value.puzzle.getDimension();
@@ -84,6 +86,7 @@ class PuzzleController extends GetxController {
       // Assign the tiles new current positions until the puzzle is solvable and
       // zero tiles are in their correct position.
       while (!puzzle.isSolvable() || puzzle.getNumberOfCorrectTiles() != 0) {
+        debugPrint("Not solvable puzzle, trying again");
         currentPositions.shuffle(random);
         tiles = _getTileListFromPositions(
           correctPositions,
@@ -145,14 +148,22 @@ class PuzzleController extends GetxController {
     });
   }
 
+  void playFullTrack() {
+      soundLibrary.playFullTrack();
+  }
+
   void moveTile(Tile tappedTile) {
     final mutablePuzzle = Puzzle(tiles: [...puzzleState.value.puzzle.tiles]);
     final movedPuzzle = mutablePuzzle.moveTiles(tappedTile, []);
     if (movedPuzzle.isComplete()) {
-      // todo
+      puzzleState.update((state) {
+        state?.puzzle = movedPuzzle.sort();
+        state?.isComplete = true;
+      });
     } else {
       puzzleState.update((state) {
         state?.puzzle = movedPuzzle.sort();
+        state?.isComplete = false;
       });
     }
     puzzleState.update((state) {

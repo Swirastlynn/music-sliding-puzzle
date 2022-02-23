@@ -19,35 +19,74 @@ class PuzzleView extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.only(top: 48),
-            child: Obx(
-              () => Text(
-                "Moves: ${controller.movesCounter.toString()}",
-                style: Theme.of(context).textTheme.bodyText1,
+          const SizedBox(height: 48),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  shape: const StadiumBorder(),
+                  side: const BorderSide(width: 1, color: CustomColors.expectedMelodyButton),
+                ),
+                onPressed: () {
+                  controller.goToPreviousLevel();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Text(
+                    "<-",
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                ),
               ),
+              const Spacer(),
+              Text(
+                "Level",
+                style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                  color: CustomColors.levelButton,
+                ),
+              ),
+              const Spacer(),
+              OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  shape: const StadiumBorder(),
+                  side: const BorderSide(width: 1, color: CustomColors.expectedMelodyButton),
+                ),
+                onPressed: () {
+                  controller.goToNextLevel();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Text(
+                    "->",
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Obx(
+            () => Text(
+              "Moves: ${controller.movesCounter.toString()}",
+              style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
-          Container(
-            padding: const EdgeInsets.only(top: 8, bottom: 16),
-            child: Obx(
-              () => Text(
-                "Played notes: ${controller.playedNotesCounter.toString()}",
-                style: Theme.of(context).textTheme.bodyText1,
-              ),
+          Obx(
+            () => Text(
+              "Played notes: ${controller.playedNotesCounter.toString()}",
+              style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
+          const SizedBox(height: 16),
           Container(
             alignment: Alignment.center,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(6),
-                  child: Text(
-                    "Double tap to listen",
-                    style: Theme.of(context).textTheme.bodyText2,
-                  ),
+                Text(
+                  "Double tap to listen",
+                  style: Theme.of(context).textTheme.bodyText2,
                 ),
                 const Icon(
                   Icons.audiotrack,
@@ -61,63 +100,19 @@ class PuzzleView extends StatelessWidget {
             "Single tap to move a tile",
             style: Theme.of(context).textTheme.bodyText2,
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 16, bottom: 16, right: 12, left: 12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    shape: const StadiumBorder(),
-                    side: const BorderSide(width: 1, color: CustomColors.expectedMelodyButton),
-                  ),
-                  onPressed: () {
-                    controller.goToPreviousLevel();
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Text(
-                      "<-",
-                      style: Theme.of(context).textTheme.headline3,
-                    ),
-                  ),
-                ),
-                const Spacer(),
-                Text(
-                  "Level",
-                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                        color: CustomColors.levelButton,
-                      ),
-                ),
-                const Spacer(),
-                OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                    shape: const StadiumBorder(),
-                    side: const BorderSide(width: 1, color: CustomColors.expectedMelodyButton),
-                  ),
-                  onPressed: () {
-                    controller.goToNextLevel();
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Text(
-                      "->",
-                      style: Theme.of(context).textTheme.headline3,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+          const SizedBox(height: 40),
+          Obx(
+            () => _Board(puzzle: controller.puzzle),
           ),
-          Container(
-            padding: const EdgeInsets.only(top: 8),
-            child: Obx(
-              () => _Board(puzzle: controller.puzzle),
+          const SizedBox(height: 8),
+          Obx(
+            () => SizedBox(
+              child: (controller.isComplete) ? _Congrats() : const Expanded(child: SizedBox.shrink()),
             ),
           ),
           const Spacer(),
           Container(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(16),
             child: SizedBox(
               width: double.infinity,
               child: OutlinedButton(
@@ -145,9 +140,9 @@ class PuzzleView extends StatelessWidget {
 }
 
 class _Board extends StatelessWidget {
-  _Board({Key? key, required this.puzzle}) : super(key: key);
+  const _Board({Key? key, required this.puzzle}) : super(key: key);
 
-  final Puzzle puzzle; // todo not through controller?
+  final Puzzle puzzle;
 
   @override
   Widget build(BuildContext context) {
@@ -275,6 +270,21 @@ class _MusicTile extends GetView<PuzzleController> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _Congrats extends StatelessWidget {
+  _Congrats({Key? key}) : super(key: key);
+
+  final PuzzleController controller = Get.find();
+
+  @override
+  Widget build(BuildContext context) {
+    controller.playFullTrack();
+    return Text(
+      "Congrats!",
+      style: Theme.of(context).textTheme.headline2,
     );
   }
 }

@@ -5,7 +5,8 @@ import 'package:music_sliding_puzzle/common/theme/custom_colors.dart';
 
 import '../presentation/puzzle_controller.dart';
 
-class WaveAnimationWidget extends StatefulWidget { // todo child inside?
+class WaveAnimationWidget extends StatefulWidget {
+  // todo child inside?
   const WaveAnimationWidget({required this.onTap, Key? key, required this.onDoubleTap})
       : super(key: key);
 
@@ -95,9 +96,7 @@ class _WaveAnimationWidgetState extends State<WaveAnimationWidget> with TickerPr
       },
       onDoubleTap: () {
         if (!controller.isTutorial) {
-          _soundAnimationController.forward(from: 0.0);
-          _soundAnimationController2.forward(from: 0.0);
-          _soundAnimationController3.forward(from: 0.0);
+          playAnimation();
           widget.onDoubleTap();
         }
       },
@@ -154,6 +153,12 @@ class _WaveAnimationWidgetState extends State<WaveAnimationWidget> with TickerPr
         ],
       ),
     );
+  }
+
+  void playAnimation() { // todo how to play from outside?
+    _soundAnimationController.forward(from: 0.0);
+    _soundAnimationController2.forward(from: 0.0);
+    _soundAnimationController3.forward(from: 0.0);
   }
 
   @override
