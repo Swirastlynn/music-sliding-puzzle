@@ -160,4 +160,8 @@ class PuzzleController extends GetxController {
       // todo
     }
   }
+
+  bool isTileMovable(Tile tile) {
+    return puzzleState.value.puzzle.isTileMovable(tile);
+  }
 }

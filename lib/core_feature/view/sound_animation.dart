@@ -6,6 +6,7 @@ import 'package:music_sliding_puzzle/common/theme/custom_colors.dart';
 import '../presentation/puzzle_controller.dart';
 
 class SoundAnimationWidget extends StatefulWidget {
+  // todo rename do WaveAnimationWidget
   const SoundAnimationWidget({required this.onTap, Key? key, required this.onDoubleTap})
       : super(key: key);
 
@@ -159,5 +160,8 @@ class _SoundAnimationWidgetState extends State<SoundAnimationWidget> with Ticker
   @override
   void dispose() {
     _soundAnimationController.dispose();
+    _soundAnimationController2.dispose();
+    _soundAnimationController3.dispose();
+    super.dispose();
   }
 }

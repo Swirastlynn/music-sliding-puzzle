@@ -5,6 +5,7 @@ import 'package:music_sliding_puzzle/core_feature/data/model/puzzle.dart';
 import 'package:music_sliding_puzzle/core_feature/data/model/tile.dart';
 import 'package:music_sliding_puzzle/core_feature/presentation/puzzle_controller.dart';
 
+import 'shake_animation.dart';
 import 'sound_animation.dart';
 
 class PuzzleView extends StatelessWidget {
@@ -30,7 +31,7 @@ class PuzzleView extends StatelessWidget {
           Container(
             padding: const EdgeInsets.only(top: 8, bottom: 16),
             child: Obx(
-                  () => Text(
+              () => Text(
                 "Played notes: ${controller.playedNotesCounter.toString()}",
                 style: Theme.of(context).textTheme.bodyText1,
               ),
@@ -91,7 +92,7 @@ class PuzzleView extends StatelessWidget {
 }
 
 class _Board extends StatelessWidget {
-  const _Board({Key? key, required this.puzzle}) : super(key: key);
+  _Board({Key? key, required this.puzzle}) : super(key: key);
 
   final Puzzle puzzle; // todo not through controller?
 
@@ -157,8 +158,10 @@ class _WhitespaceTile extends StatelessWidget {
 }
 
 class _MusicTile extends GetView<PuzzleController> {
-  const _MusicTile({Key? key, required this.tile}) : super(key: key);
+  _MusicTile({Key? key, required this.tile}) : super(key: key);
 
+  final GlobalKey<ShakeAnimationWidgetState> shakeWidgetKey =
+      GlobalKey<ShakeAnimationWidgetState>();
   final Tile tile;
 
   @override
@@ -187,26 +190,32 @@ class _MusicTile extends GetView<PuzzleController> {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Text(
-                    tile.name,
-                    style: Theme.of(context).textTheme.bodyText2,
+            ShakeAnimationWidget(
+              key: shakeWidgetKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: Text(
+                      tile.name,
+                      style: Theme.of(context).textTheme.bodyText2,
+                    ),
                   ),
-                ),
-                const Icon(
-                  Icons.audiotrack,
-                  color: CustomColors.noteIconOnLightBg,
-                  size: 20.0,
-                ),
-              ],
+                  const Icon(
+                    Icons.audiotrack,
+                    color: CustomColors.noteIconOnLightBg,
+                    size: 20.0,
+                  ),
+                ],
+              ),
             ),
             SoundAnimationWidget(
               onTap: () {
+                if (!controller.isTileMovable(tile)) { // todo cleaner
+                  shakeWidgetKey.currentState?.shake();
+                }
                 controller.moveTile(tile);
               },
               onDoubleTap: () {
