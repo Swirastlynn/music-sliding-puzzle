@@ -120,9 +120,7 @@ class PuzzleScreen extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Obx(
-            () => SizedBox(
-              child: (controller.isComplete) ? _Congrats() : const Expanded(child: SizedBox.shrink()),
-            ),
+            () => (controller.isComplete) ? _Congrats() : const Expanded(child: SizedBox.shrink()),
           ),
           const Spacer(),
           Container(
