@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:music_sliding_puzzle/tutorial_screen_2.dart';
+import 'package:music_sliding_puzzle/tutorial_screen_3.dart';
 
 import 'common/theme/custom_colors.dart';
+import 'core_feature/view/puzzle_screen.dart';
 
-class TutorialScreen1 extends StatelessWidget {
-  static const ROUTE = '/tutorial_1';
+class TutorialScreen2 extends StatelessWidget {
+  static const ROUTE = '/tutorial_2';
 
-  const TutorialScreen1({Key? key}) : super(key: key);
+  const TutorialScreen2({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class TutorialScreen1 extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 48),
-            Image.asset('assets/images/tutorial_1.png'),
+            Image.asset('assets/images/tutorial_2.png'),
             const Spacer(),
             Container(
               padding: const EdgeInsets.all(16),
@@ -39,7 +40,7 @@ class TutorialScreen1 extends StatelessWidget {
                   side: const BorderSide(width: 1, color: CustomColors.expectedMelodyButton),
                 ),
                 onPressed: () {
-                  Get.toNamed(TutorialScreen2.ROUTE);
+                  Get.toNamed(TutorialScreen3.ROUTE);
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(10),

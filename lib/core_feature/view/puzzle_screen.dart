@@ -8,10 +8,10 @@ import 'package:music_sliding_puzzle/core_feature/presentation/puzzle_controller
 import 'shake_animation.dart';
 import 'wave_animation.dart';
 
-class PuzzleView extends StatelessWidget {
+class PuzzleScreen extends StatelessWidget {
   static const ROUTE = '/puzzle_view';
 
-  PuzzleView({Key? key}) : super(key: key);
+  PuzzleScreen({Key? key}) : super(key: key);
 
   final PuzzleController controller = Get.find();
 

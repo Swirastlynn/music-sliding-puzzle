@@ -10,10 +10,12 @@ import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:music_sliding_puzzle/tutorial_screen_1.dart';
 import 'package:music_sliding_puzzle/common/theme/custom_colors.dart';
 import 'package:music_sliding_puzzle/common/theme/custom_themes.dart';
+import 'package:music_sliding_puzzle/tutorial_screen_2.dart';
+import 'package:music_sliding_puzzle/tutorial_screen_3.dart';
 
 import 'core_feature/data/sounds_library.dart';
 import 'core_feature/presentation/puzzle_controller.dart';
-import 'core_feature/view/puzzle_view.dart';
+import 'core_feature/view/puzzle_screen.dart';
 import 'level.dart';
 
 void main() {
@@ -43,15 +45,20 @@ class SoundingPuzzleApp extends StatelessWidget {
               transition: Transition.zoom
           ),
           GetPage(
-              name: PuzzleView.ROUTE,
-              page: () => PuzzleView(),
+              name: TutorialScreen2.ROUTE,
+              page: () => const TutorialScreen2(),
               transition: Transition.zoom
           ),
-          // GetPage(
-          //     name: TutorialScreen3.ROUTE,
-          //     page: () => TutorialScreen3(),
-          //     transition: Transition.zoom
-          // ),
+          GetPage(
+              name: TutorialScreen3.ROUTE,
+              page: () => const TutorialScreen3(),
+              transition: Transition.zoom
+          ),
+          GetPage(
+              name: PuzzleScreen.ROUTE,
+              page: () => PuzzleScreen(),
+              transition: Transition.zoom
+          ),
         ]
     );
   }
