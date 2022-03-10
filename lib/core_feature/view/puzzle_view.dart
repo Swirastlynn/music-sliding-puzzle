@@ -9,6 +9,8 @@ import 'shake_animation.dart';
 import 'wave_animation.dart';
 
 class PuzzleView extends StatelessWidget {
+  static const ROUTE = '/puzzle_view';
+
   PuzzleView({Key? key}) : super(key: key);
 
   final PuzzleController controller = Get.find();
@@ -16,6 +18,18 @@ class PuzzleView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomLeft,
+          stops: [0, 0.28, 1],
+          colors: [
+            CustomColors.gradientTop,
+            CustomColors.gradientMiddle,
+            CustomColors.gradientBottom,
+          ],
+        ),
+      ),
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
@@ -43,8 +57,8 @@ class PuzzleView extends StatelessWidget {
               Text(
                 "Level",
                 style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                  color: CustomColors.levelButton,
-                ),
+                      color: CustomColors.levelButton,
+                    ),
               ),
               const Spacer(),
               OutlinedButton(
