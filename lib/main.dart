@@ -7,9 +7,9 @@ import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
-import 'package:music_sliding_puzzle/tutorial_screen_1.dart';
 import 'package:music_sliding_puzzle/common/theme/custom_colors.dart';
 import 'package:music_sliding_puzzle/common/theme/custom_themes.dart';
+import 'package:music_sliding_puzzle/tutorial_screen_1.dart';
 import 'package:music_sliding_puzzle/tutorial_screen_2.dart';
 import 'package:music_sliding_puzzle/tutorial_screen_3.dart';
 
@@ -34,33 +34,29 @@ class SoundingPuzzleApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Sounding Puzzle',
-      theme: CustomThemes.darkTheme,
-      home: const TutorialScreen1(),
-      initialBinding: AppBinding(),
+        title: 'Sounding Puzzle',
+        theme: CustomThemes.darkTheme,
+        home: const TutorialScreen1(),
+        initialBinding: AppBinding(),
         getPages: [
           GetPage(
-              name: TutorialScreen1.ROUTE,
-              page: () => const TutorialScreen1(),
-              transition: Transition.zoom
+            name: TutorialScreen1.ROUTE,
+            page: () => const TutorialScreen1(),
+            transition: Transition.zoom,
           ),
           GetPage(
-              name: TutorialScreen2.ROUTE,
-              page: () => const TutorialScreen2(),
-              transition: Transition.zoom
+            name: TutorialScreen2.ROUTE,
+            page: () => const TutorialScreen2(),
+            transition: Transition.zoom,
           ),
           GetPage(
-              name: TutorialScreen3.ROUTE,
-              page: () => const TutorialScreen3(),
-              transition: Transition.zoom
+            name: TutorialScreen3.ROUTE,
+            page: () => const TutorialScreen3(),
+            transition: Transition.zoom,
           ),
           GetPage(
-              name: PuzzleScreen.ROUTE,
-              page: () => PuzzleScreen(),
-              transition: Transition.zoom
-          ),
-        ]
-    );
+              name: PuzzleScreen.ROUTE, page: () => PuzzleScreen(), transition: Transition.zoom),
+        ]);
   }
 }
 
@@ -78,14 +74,12 @@ class AppBinding implements Bindings {
       audioCache: audioCache,
       stage: level.stage, // todo for more Levels, keep global GameState in MyApp class
     );
-    Get.lazyPut<PuzzleController>(
-      () {
-        return PuzzleController(
-          soundLibrary: soundLibrary,
-          levelSize: level.size,
-          levelStage: level.stage,
-        );
-      },
+    Get.put(
+      PuzzleController(
+        soundLibrary: soundLibrary,
+        levelSize: level.size,
+        levelStage: level.stage,
+      ),
     );
   }
 }

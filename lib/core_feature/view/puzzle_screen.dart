@@ -140,7 +140,7 @@ class PuzzleScreen extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: Text(
-                    "Play expected melody",
+                    "Listen to the melody",
                     style: Theme.of(context).textTheme.headline3,
                   ),
                 ),
@@ -215,11 +215,12 @@ class _WhitespaceTile extends StatelessWidget {
   }
 }
 
-class _MusicTile extends GetView<PuzzleController> {
+class _MusicTile extends StatelessWidget {
   _MusicTile({Key? key, required this.tile}) : super(key: key);
 
   final GlobalKey<ShakeAnimationWidgetState> shakeWidgetKey =
       GlobalKey<ShakeAnimationWidgetState>();
+  final PuzzleController controller = Get.find();
   final Tile tile;
 
   @override
