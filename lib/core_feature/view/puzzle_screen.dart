@@ -37,19 +37,24 @@ class PuzzleScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  shape: const StadiumBorder(),
-                  side: const BorderSide(width: 1, color: CustomColors.expectedMelodyButton),
-                ),
-                onPressed: () {
-                  controller.goToPreviousLevel();
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Text(
-                    "<-",
-                    style: Theme.of(context).textTheme.headline3,
+              Obx(
+                () => Visibility(
+                  visible: !controller.isFirstStage,
+                  child: OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      shape: const StadiumBorder(),
+                      side: const BorderSide(width: 1, color: CustomColors.expectedMelodyButton),
+                    ),
+                    onPressed: () {
+                      controller.goToPreviousLevel();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Text(
+                        "<-",
+                        style: Theme.of(context).textTheme.headline3,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -63,19 +68,24 @@ class PuzzleScreen extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  shape: const StadiumBorder(),
-                  side: const BorderSide(width: 1, color: CustomColors.expectedMelodyButton),
-                ),
-                onPressed: () {
-                  controller.goToNextLevel();
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Text(
-                    "->",
-                    style: Theme.of(context).textTheme.headline3,
+              Obx(
+                () => Visibility(
+                  visible: !controller.isLastStage,
+                  child: OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      shape: const StadiumBorder(),
+                      side: const BorderSide(width: 1, color: CustomColors.expectedMelodyButton),
+                    ),
+                    onPressed: () {
+                      controller.goToNextLevel();
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Text(
+                        "->",
+                        style: Theme.of(context).textTheme.headline3,
+                      ),
+                    ),
                   ),
                 ),
               ),
