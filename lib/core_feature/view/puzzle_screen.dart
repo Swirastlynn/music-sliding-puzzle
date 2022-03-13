@@ -55,7 +55,7 @@ class PuzzleScreen extends StatelessWidget {
               ),
               const Spacer(),
               Text(
-                "Level",
+                "Level ${controller.levelStage}",
                 style: Theme.of(context).textTheme.bodyText1?.copyWith(
                       color: CustomColors.levelButton,
                     ),
