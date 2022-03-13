@@ -8,22 +8,20 @@ import 'package:music_sliding_puzzle/core_feature/data/model/tile.dart';
 import 'package:music_sliding_puzzle/core_feature/data/sounds_library.dart';
 import 'package:music_sliding_puzzle/core_feature/presentation/puzzle_state.dart';
 import 'package:music_sliding_puzzle/core_feature/presentation/tutorial_state.dart';
+import 'package:music_sliding_puzzle/game_state.dart';
 
 class PuzzleController extends GetxController {
   PuzzleController({
     required this.soundLibrary,
-    required this.levelSize,
-    required this.levelStage,
     this.random,
   });
 
   final SoundLibrary soundLibrary;
-  final int levelSize;
-  final int levelStage;
   final Random? random;
 
   late Rx<TutorialState> tutorialState;
   late Rx<PuzzleState> puzzleState;
+  late Rx<GameState> gameState;
 
   get isTutorial => tutorialState.value.isTutorial;
 
@@ -41,8 +39,13 @@ class PuzzleController extends GetxController {
 
   get playedNotesCounter => puzzleState.value.playedNotesCounter;
 
+  get levelStage => gameState.value.level.stage;
+
+  get levelSize => gameState.value.level.size;
+
   @override
   void onInit() {
+    gameState = Get.find<GameState>().obs;
     tutorialState = TutorialState(tutorialPlayingTileNumber: -1).obs;
     puzzleState =
         PuzzleState(puzzle: _generatePuzzle().sort(), movesCounter: 0, playedNotesCounter: 0).obs;
@@ -109,7 +112,7 @@ class PuzzleController extends GetxController {
         if (i == levelSize * levelSize)
           Tile(
             value: i,
-            name: soundLibrary.soundName(i - 1),
+            name: soundLibrary.soundName(i - 1, gameState.value.level.stage),
             correctPosition: whitespacePosition,
             currentPosition: currentPositions[i - 1],
             isWhitespace: true,
@@ -117,7 +120,7 @@ class PuzzleController extends GetxController {
         else
           Tile(
             value: i,
-            name: soundLibrary.soundName(i - 1),
+            name: soundLibrary.soundName(i - 1, gameState.value.level.stage),
             correctPosition: correctPositions[i - 1],
             currentPosition: currentPositions[i - 1],
           )
@@ -127,6 +130,7 @@ class PuzzleController extends GetxController {
   void playTutorialMelody() {
     if (!isTutorial) {
       soundLibrary.playSoundsOneByOne(
+        gameState.value.level.stage,
         onSoundStart: (soundIndex) {
           tutorialState.update((state) {
             state?.tutorialPlayingTileNumber = soundIndex + 1;
@@ -142,14 +146,14 @@ class PuzzleController extends GetxController {
   }
 
   void playTileSound(Tile tappedTile) {
-    soundLibrary.playSound(tappedTile);
+    soundLibrary.playSound(tappedTile, gameState.value.level.stage);
     puzzleState.update((state) {
       state?.playedNotesCounter += 1;
     });
   }
 
   void playFullTrack() {
-      soundLibrary.playFullTrack();
+    soundLibrary.playFullTrack(gameState.value.level.stage);
   }
 
   void moveTile(Tile tappedTile) {
@@ -176,10 +180,28 @@ class PuzzleController extends GetxController {
   }
 
   void goToPreviousLevel() {
-
+    if (gameState.value.level.stage > 1) {
+      gameState.update((state) {
+        state?.level.stage -= 1;
+      });
+      puzzleState.update((state) {
+        state?.puzzle = _generatePuzzle().sort();
+        state?.movesCounter = 0;
+        state?.playedNotesCounter = 0;
+      });
+    }
   }
 
   void goToNextLevel() {
-
+    if (gameState.value.level.stage < 2) {
+      gameState.update((state) {
+        state?.level.stage += 1;
+      });
+      puzzleState.update((state) {
+        state?.puzzle = _generatePuzzle().sort();
+        state?.movesCounter = 0;
+        state?.playedNotesCounter = 0;
+      });
+    }
   }
 }

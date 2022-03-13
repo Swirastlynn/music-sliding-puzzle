@@ -6,14 +6,13 @@ import 'package:music_sliding_puzzle/common/custom_exceptions.dart';
 import 'model/tile.dart';
 
 class SoundLibrary {
-  SoundLibrary({required this.audioCache, required this.stage}) {
+  SoundLibrary({required this.audioCache}) {
     preload();
   }
 
   final AudioCache audioCache;
-  final int stage;
 
-  final List<String> _soundsPathsStage1 = [
+  final List<String> _soundsPaths = [
     'stage1/G_major_scale_1.mp3',
     'stage1/G_major_scale_2.mp3',
     'stage1/G_major_scale_3.mp3',
@@ -31,7 +30,7 @@ class SoundLibrary {
     'stage1/G_major_scale_15.mp3',
   ];
 
-  final String _melodyPathStage1 = 'stage1/G_major_scale_full.wav';
+  final String _melodyPath = 'stage1/G_major_scale_full.wav';
 
   final _mapOfStagesToSoundNames = {
     1: [
@@ -52,45 +51,69 @@ class SoundLibrary {
       "G5",
       "WHITESPACE_PLACEHOLDER"
     ],
+    2: [
+      "",
+      "A3",
+      "B3",
+      "",
+      "D4",
+      "E4",
+      "F#4",
+      "",
+      "A4",
+      "B4",
+      "",
+      "D5",
+      "E5",
+      "F5#",
+      "",
+      "WHITESPACE_PLACEHOLDER"
+    ],
   };
 
-  String soundName(int index) => _mapOfStagesToSoundNames.entries.elementAt(stage - 1).value[index];
+  String soundName(int index, int stage) =>
+      _mapOfStagesToSoundNames.entries
+          .elementAt(stage - 1)
+          .value[index];
 
   void preload() {
-    audioCache.loadAll([..._soundsPathsStage1, _melodyPathStage1]);
+    audioCache.loadAll([..._soundsPaths, _melodyPath]);
   }
 
-  void playSound(Tile tappedTile) {
+  void playSound(Tile tappedTile, int stage) {
     switch (stage) {
       case 1:
-        audioCache.play(_soundsPathsStage1[tappedTile.value - 1]);
+      case 2:
+        audioCache.play(_soundsPaths[tappedTile.value - 1]);
         break;
       default:
         throw const UnexpectedStageNumberException();
     }
   }
 
-  void playFullTrack() {
+  void playFullTrack(int stage) {
     switch (stage) {
       case 1:
-        audioCache.play(_melodyPathStage1);
+      case 2:
+        audioCache.play(_melodyPath);
         break;
       default:
         throw const UnexpectedStageNumberException();
     }
   }
 
-  void playSoundsOneByOne(
+  void playSoundsOneByOne(int stage,
       {required void Function(int soundIndex) onSoundStart,
-      required void Function() onMelodyComplete}) {
+        required void Function() onMelodyComplete}) {
     StreamSubscription<void>? _subscription;
     switch (stage) {
       case 1:
+      case 2:
         int soundIndex = 0;
-        int outOfBoundIndex = _soundsPathsStage1.length;
+        int outOfBoundIndex = _soundsPaths.length;
 
         _subscription = audioCache.fixedPlayer?.onPlayerCompletion.listen(
-          (event) {
+              (event) {
             soundIndex++;
             if (soundIndex == outOfBoundIndex) {
               onMelodyComplete();
@@ -98,12 +121,12 @@ class SoundLibrary {
               return;
             }
             onSoundStart(soundIndex);
-            audioCache.play(_soundsPathsStage1[soundIndex]);
+            audioCache.play(_soundsPaths[soundIndex]);
           },
         );
 
         // start playing
-        audioCache.play(_soundsPathsStage1[soundIndex]);
+        audioCache.play(_soundsPaths[soundIndex]);
         onSoundStart(soundIndex);
         break;
       default:

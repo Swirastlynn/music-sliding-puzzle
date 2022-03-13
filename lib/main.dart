@@ -9,6 +9,7 @@ import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:music_sliding_puzzle/common/theme/custom_colors.dart';
 import 'package:music_sliding_puzzle/common/theme/custom_themes.dart';
+import 'package:music_sliding_puzzle/game_state.dart';
 import 'package:music_sliding_puzzle/tutorial_screen_1.dart';
 import 'package:music_sliding_puzzle/tutorial_screen_2.dart';
 import 'package:music_sliding_puzzle/tutorial_screen_3.dart';
@@ -57,7 +58,7 @@ class SoundingPuzzleApp extends StatelessWidget {
         GetPage(
           name: PuzzleScreen.ROUTE,
           page: () => PuzzleScreen(),
-          transition: Transition.fade,
+          transition: Transition.zoom,
         ),
       ],
     );
@@ -67,7 +68,15 @@ class SoundingPuzzleApp extends StatelessWidget {
 class AppBinding implements Bindings {
   @override
   void dependencies() {
-    Level level = Level(size: 4, stage: 1);
+    Level level = Level(
+      size: 4,
+      stage: 1,
+    );
+    GameState gameState = GameState(
+      level: level,
+    );
+    Get.put(gameState);
+
     AudioPlayer audioPlayer = AudioPlayer(playerId: 'my_unique_playerId');
     AudioCache audioCache = AudioCache(
       // WARNING: AudioCache is not available for Flutter Web.
@@ -76,13 +85,10 @@ class AppBinding implements Bindings {
     );
     var soundLibrary = SoundLibrary(
       audioCache: audioCache,
-      stage: level.stage, // todo for more Levels, keep global GameState in MyApp class
     );
     Get.put(
       PuzzleController(
         soundLibrary: soundLibrary,
-        levelSize: level.size,
-        levelStage: level.stage,
       ),
     );
   }
