@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:music_sliding_puzzle/tutorial_screen_3.dart';
 
 import 'common/theme/custom_colors.dart';
-import 'core_feature/view/puzzle_screen.dart';
 
 class TutorialScreen2 extends StatelessWidget {
   static const ROUTE = '/tutorial_2';
@@ -29,7 +28,7 @@ class TutorialScreen2 extends StatelessWidget {
         ),
         child: Column(
           children: [
-            const SizedBox(height: 48),
+            const SizedBox(height: 128),
             Image.asset('assets/images/tutorial_2.png'),
             const Spacer(),
             Container(
