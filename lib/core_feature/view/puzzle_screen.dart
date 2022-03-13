@@ -60,15 +60,6 @@ class PuzzleScreen extends StatelessWidget {
               ),
               const Spacer(),
               Obx(
-                () => Text(
-                  "Level ${controller.levelStage.toString()}",
-                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                        color: CustomColors.levelButton,
-                      ),
-                ),
-              ),
-              const Spacer(),
-              Obx(
                 () => Visibility(
                   visible: !controller.isLastStage,
                   child: OutlinedButton(
@@ -90,6 +81,14 @@ class PuzzleScreen extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+          Obx(
+                () => Text(
+              "Level ${controller.levelStage.toString()}",
+              style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                color: CustomColors.levelButton,
+              ),
+            ),
           ),
           const SizedBox(height: 8),
           Obx(
