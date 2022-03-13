@@ -16,6 +16,9 @@ class PuzzleController extends GetxController {
     this.random,
   });
 
+  static const minLevel = 1;
+  static const maxLevel = 3;
+
   final SoundLibrary soundLibrary;
   final Random? random;
 
@@ -180,7 +183,7 @@ class PuzzleController extends GetxController {
   }
 
   void goToPreviousLevel() {
-    if (gameState.value.level.stage > 1) {
+    if (gameState.value.level.stage > minLevel) {
       gameState.update((state) {
         state?.level.stage -= 1;
       });
@@ -193,7 +196,7 @@ class PuzzleController extends GetxController {
   }
 
   void goToNextLevel() {
-    if (gameState.value.level.stage < 2) {
+    if (gameState.value.level.stage < maxLevel) {
       gameState.update((state) {
         state?.level.stage += 1;
       });
