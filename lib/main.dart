@@ -34,29 +34,33 @@ class SoundingPuzzleApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-        title: 'Sounding Puzzle',
-        theme: CustomThemes.darkTheme,
-        home: const TutorialScreen1(),
-        initialBinding: AppBinding(),
-        getPages: [
-          GetPage(
-            name: TutorialScreen1.ROUTE,
-            page: () => const TutorialScreen1(),
-            transition: Transition.zoom,
-          ),
-          GetPage(
-            name: TutorialScreen2.ROUTE,
-            page: () => const TutorialScreen2(),
-            transition: Transition.zoom,
-          ),
-          GetPage(
-            name: TutorialScreen3.ROUTE,
-            page: () => const TutorialScreen3(),
-            transition: Transition.zoom,
-          ),
-          GetPage(
-              name: PuzzleScreen.ROUTE, page: () => PuzzleScreen(), transition: Transition.zoom),
-        ]);
+      title: 'Sounding Puzzle',
+      theme: CustomThemes.darkTheme,
+      home: const TutorialScreen1(),
+      initialBinding: AppBinding(),
+      getPages: [
+        GetPage(
+          name: TutorialScreen1.ROUTE,
+          page: () => const TutorialScreen1(),
+          transition: Transition.fade,
+        ),
+        GetPage(
+          name: TutorialScreen2.ROUTE,
+          page: () => const TutorialScreen2(),
+          transition: Transition.fade,
+        ),
+        GetPage(
+          name: TutorialScreen3.ROUTE,
+          page: () => const TutorialScreen3(),
+          transition: Transition.fade,
+        ),
+        GetPage(
+          name: PuzzleScreen.ROUTE,
+          page: () => PuzzleScreen(),
+          transition: Transition.fade,
+        ),
+      ],
+    );
   }
 }
 
