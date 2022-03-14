@@ -33,62 +33,69 @@ class PuzzleScreen extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
-          const SizedBox(height: 48),
+          const SizedBox(
+            height: 24,
+          ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Obx(
-                () => Visibility(
-                  visible: !controller.isFirstStage,
-                  child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      shape: const StadiumBorder(),
-                      side: const BorderSide(width: 1, color: CustomColors.expectedMelodyButton),
-                    ),
-                    onPressed: () {
-                      controller.goToPreviousLevel();
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Text(
-                        "<-",
-                        style: Theme.of(context).textTheme.headline3,
+              Align(
+                alignment: Alignment.topLeft,
+                child: Obx(
+                  () => Opacity(
+                    opacity: (!controller.isFirstStage) ? 1.0 : 0.0,
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        shape: const StadiumBorder(),
+                        side: const BorderSide(width: 1, color: CustomColors.expectedMelodyButton),
+                      ),
+                      onPressed: () {
+                        controller.goToPreviousLevel();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Text(
+                          "<-",
+                          style: Theme.of(context).textTheme.headline3,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-              const Spacer(),
               Obx(
-                () => Visibility(
-                  visible: !controller.isLastStage,
-                  child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      shape: const StadiumBorder(),
-                      side: const BorderSide(width: 1, color: CustomColors.expectedMelodyButton),
-                    ),
-                    onPressed: () {
-                      controller.goToNextLevel();
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Text(
-                        "->",
-                        style: Theme.of(context).textTheme.headline3,
+                    () => Text(
+                  "Level ${controller.levelStage.toString()}",
+                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                    color: CustomColors.levelButton,
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.topRight,
+                child: Obx(
+                  () => Opacity(
+                    opacity: (!controller.isLastStage) ? 1.0 : 0.0,
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        shape: const StadiumBorder(),
+                        side: const BorderSide(width: 1, color: CustomColors.expectedMelodyButton),
+                      ),
+                      onPressed: () {
+                        controller.goToNextLevel();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Text(
+                          "->",
+                          style: Theme.of(context).textTheme.headline3,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
             ],
-          ),
-          Obx(
-                () => Text(
-              "Level ${controller.levelStage.toString()}",
-              style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                color: CustomColors.levelButton,
-              ),
-            ),
           ),
           const SizedBox(height: 8),
           Obx(
@@ -103,29 +110,7 @@ class PuzzleScreen extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
-          const SizedBox(height: 16),
-          Container(
-            alignment: Alignment.center,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Double tap to listen",
-                  style: Theme.of(context).textTheme.bodyText2,
-                ),
-                const Icon(
-                  Icons.audiotrack,
-                  color: CustomColors.noteIconOnDarkBg,
-                  size: 20.0,
-                ),
-              ],
-            ),
-          ),
-          Text(
-            "Single tap to move a tile",
-            style: Theme.of(context).textTheme.bodyText2,
-          ),
-          const SizedBox(height: 40),
+          const Spacer(),
           Obx(
             () => _Board(puzzle: controller.puzzle),
           ),
@@ -133,7 +118,6 @@ class PuzzleScreen extends StatelessWidget {
           Obx(
             () => (controller.isComplete) ? _Congrats() : const Expanded(child: SizedBox.shrink()),
           ),
-          const Spacer(),
           Container(
             padding: const EdgeInsets.all(16),
             child: SizedBox(

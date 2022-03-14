@@ -28,8 +28,11 @@ class TutorialScreen2 extends StatelessWidget {
         ),
         child: Column(
           children: [
-            const SizedBox(height: 128),
-            Image.asset('assets/images/tutorial_2.png'),
+            const SizedBox(height: 48),
+            Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Image.asset('assets/images/tutorial_2.png'),
+            ),
             const Spacer(),
             Container(
               padding: const EdgeInsets.all(16),

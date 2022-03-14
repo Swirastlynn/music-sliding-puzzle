@@ -28,25 +28,26 @@ class TutorialScreen1 extends StatelessWidget {
         ),
         child: Column(
           children: [
-            const SizedBox(height: 48),
-            Image.asset('assets/images/tutorial_1.png'),
+            Padding(
+              padding: const EdgeInsets.all(32.0),
+              child: Image.asset(
+                'assets/images/tutorial_1.png',
+              ),
+            ),
             const Spacer(),
-            Container(
-              padding: const EdgeInsets.all(16),
-              child: OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  shape: const StadiumBorder(),
-                  side: const BorderSide(width: 1, color: CustomColors.expectedMelodyButton),
-                ),
-                onPressed: () {
-                  Get.toNamed(TutorialScreen2.ROUTE);
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Text(
-                    "Next",
-                    style: Theme.of(context).textTheme.headline3,
-                  ),
+            OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                shape: const StadiumBorder(),
+                side: const BorderSide(width: 1, color: CustomColors.expectedMelodyButton),
+              ),
+              onPressed: () {
+                Get.toNamed(TutorialScreen2.ROUTE);
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Text(
+                  "Next",
+                  style: Theme.of(context).textTheme.headline3,
                 ),
               ),
             ),
