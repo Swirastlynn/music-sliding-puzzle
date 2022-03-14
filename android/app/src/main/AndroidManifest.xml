@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.plusnia.music_sliding_puzzle">
    <application
-        android:label="music_sliding_puzzle"
+        android:label="Mussle"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
